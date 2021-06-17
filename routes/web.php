@@ -61,6 +61,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/people/work', 'TicketController@allPeopleWork')->name('listTicketsForYou');
         Route::get('/people/show', 'TicketController@showPeopleWork')->name('listTicketsForYou');
         Route::get('/people/ticket', 'TicketController@dataPeopleWork')->name('dataPeopleWork');
+        Route::get('/people/reconciliations', 'TicketController@dataPeopleReconciliations')->name('dataPeopleReconciliations');
     });
 });
 

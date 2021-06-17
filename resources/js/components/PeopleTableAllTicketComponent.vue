@@ -1,68 +1,127 @@
 <template>
-    <div class="columns p-2">
-        <b-loading :is-full-page="isFullPage" v-model="isLoading" :can-cancel="false">
-        </b-loading>
-        <div class="column is-3">
+    <div>
+        <div class="columns p-2">
+            <b-loading :is-full-page="isFullPage" v-model="isLoading" :can-cancel="false">
+            </b-loading>
+            <div class="column is-3">
 
-        </div>
-        <div class="column is-9">
-            <div class="field is-grouped is-grouped-multiline">
-                <div class="control">
-                    <div class="tags has-addons">
-                        <span class="tag is-dark">Все</span>
-                        <span class="tag is-info">Задачи</span>
+            </div>
+            <div class="column is-9">
+                <div class="field is-grouped is-grouped-multiline">
+                    <div class="control">
+                        <div class="tags has-addons">
+                            <span class="tag is-dark">Исполнение</span>
+                            <span class="tag is-info">Задачи</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <b-table
-                paginated
-                backend-pagination
-                :total="total"
-                :per-page="perPage"
-                @page-change="onPageChange"
-                :data="data"
-                :sort-icon="sortIcon"
-                :sort-icon-size="sortIconSize"
+                <b-table
+                    paginated
+                    backend-pagination
+                    :total="total"
+                    :per-page="perPage"
+                    @page-change="onPageChange"
+                    :data="data"
+                    :sort-icon="sortIcon"
+                    :sort-icon-size="sortIconSize"
 
-                :pagination-rounded="true"
-                :selected.sync="selected"
-                :default-sort-direction="defaultSortOrder"
-                :default-sort="[sortField, sortOrder]"
-                aria-next-label="Next page"
-                aria-previous-label="Previous page"
-                aria-page-label="Page"
-                aria-current-label="Current page">
-                <b-table-column field="id" label="ID" width="40" sortable numeric v-slot="props">
-                    {{ props.row.id }}
-                </b-table-column>
-                <b-table-column field="title" label="Title" sortable v-slot="props">
-                    {{ props.row.title }}
-                </b-table-column>
-                <b-table-column field="date_start" label="Start" sortable v-slot="props">
-                    {{ props.row.date_start }}
-                </b-table-column>
-                <b-table-column field="date_start" label="End" sortable v-slot="props">
-                    {{ props.row.date_end }}
-                </b-table-column>
-                <b-table-column field="work_status" label="Work status" width="150" sortable v-slot="props">
-                    {{ isplTextSearch(props.row.work_status) }}
-                </b-table-column>
-                <b-table-column field="sogl_status" label="Reconciliation" width="150" sortable v-slot="props">
-                    {{ soglTextSearch(props.row.sogl_status) }}
-                </b-table-column>
-                <b-table-column field="action" label="Actions" width="40" sortable v-slot="props">
-                    <a :href="'/show?id=' + props.row.id">open</a>
-                </b-table-column>
-            </b-table>
+                    :pagination-rounded="true"
+                    :selected.sync="selected"
+                    :default-sort-direction="defaultSortOrder"
+                    :default-sort="[sortField, sortOrder]"
+                    aria-next-label="Next page"
+                    aria-previous-label="Previous page"
+                    aria-page-label="Page"
+                    aria-current-label="Current page">
+                    <b-table-column field="id" label="ID" width="40" sortable numeric v-slot="props">
+                        {{ props.row.id }}
+                    </b-table-column>
+                    <b-table-column field="title" label="Title" sortable v-slot="props">
+                        {{ props.row.title }}
+                    </b-table-column>
+                    <b-table-column field="date_start" label="Start" sortable v-slot="props">
+                        {{ props.row.date_start }}
+                    </b-table-column>
+                    <b-table-column field="date_start" label="End" sortable v-slot="props">
+                        {{ props.row.date_end }}
+                    </b-table-column>
+                    <b-table-column field="work_status" label="Work status" width="150" sortable v-slot="props">
+                        {{ isplTextSearch(props.row.work_status) }}
+                    </b-table-column>
+                    <b-table-column field="sogl_status" label="Reconciliation" width="150" sortable v-slot="props">
+                        {{ soglTextSearch(props.row.sogl_status) }}
+                    </b-table-column>
+                    <b-table-column field="action" label="Actions" width="40" sortable v-slot="props">
+                        <a :href="'/show?id=' + props.row.id">open</a>
+                    </b-table-column>
+                </b-table>
+            </div>
+        </div>
+
+        <div class="columns p-2">
+            <div class="column is-3">
+
+            </div>
+            <div class="column is-9">
+                <div class="field is-grouped is-grouped-multiline">
+                    <div class="control">
+                        <div class="tags has-addons">
+                            <span class="tag is-dark">Согласование</span>
+                            <span class="tag is-info">Задачи</span>
+                        </div>
+                    </div>
+                </div>
+                <b-table
+                    paginated
+                    backend-pagination
+                    :total="totalReconciliations"
+                    :per-page="perPage"
+                    @page-change="onPageChange"
+                    :data="dataReconciliations"
+                    :sort-icon="sortIcon"
+                    :sort-icon-size="sortIconSize"
+
+                    :pagination-rounded="true"
+                    :selected.sync="selected"
+                    :default-sort-direction="defaultSortOrder"
+                    :default-sort="[sortField, sortOrder]"
+                    aria-next-label="Next page"
+                    aria-previous-label="Previous page"
+                    aria-page-label="Page"
+                    aria-current-label="Current page">
+                    <b-table-column field="id" label="ID" width="40" sortable numeric v-slot="props">
+                        {{ props.row.id }}
+                    </b-table-column>
+                    <b-table-column field="title" label="Title" sortable v-slot="props">
+                        {{ props.row.title }}
+                    </b-table-column>
+                    <b-table-column field="date_start" label="Start" sortable v-slot="props">
+                        {{ props.row.date_start }}
+                    </b-table-column>
+                    <b-table-column field="date_start" label="End" sortable v-slot="props">
+                        {{ props.row.date_end }}
+                    </b-table-column>
+                    <b-table-column field="work_status" label="Work status" width="150" sortable v-slot="props">
+                        {{ isplTextSearch(props.row.work_status) }}
+                    </b-table-column>
+                    <b-table-column field="sogl_status" label="Reconciliation" width="150" sortable v-slot="props">
+                        {{ soglTextSearch(props.row.sogl_status) }}
+                    </b-table-column>
+                    <b-table-column field="action" label="Actions" width="40" sortable v-slot="props">
+                        <a :href="'/show?id=' + props.row.id">open</a>
+                    </b-table-column>
+                </b-table>
+            </div>
         </div>
     </div>
+
 </template>
 
 <script>
     export default {
         data() {
             return {
-                countTicketAll:0,
+                countTicketAll: 0,
                 sortIcon: 'arrow-up',
                 sortIconSize: 'is-small',
                 selectMenu: 1,
@@ -76,6 +135,8 @@
                 total: 0,
                 selected: null,
                 data: [],
+                dataReconciliations: [],
+                totalReconciliations: 0,
                 columns: [
                     {
                         field: 'id',
@@ -122,8 +183,14 @@
                     {id: 5, name: 'Оценка работы 5'},
                 ],
                 noStatus: 'no change',
-                countTicketNoStatus:null
+                countTicketNoStatus: null
             }
+        },
+        props: {
+            user_id: {
+                type: Object,
+            },
+
         },
         methods: {
             zakazTextSearch(d) {
@@ -161,7 +228,8 @@
                 await axios.get(process.env.MIX_HTTP + window.location.hostname + '/all/people/ticket',
                     {
                         params: {
-                            data: params
+                            data: params,
+                            user_id: this.user_id
                         }
                     })
                     .then((response) => todos = [...response.data])
@@ -172,6 +240,34 @@
                     allTotal++;
                 });
                 this.total = allTotal
+                this.isLoading = false;
+            },
+            loadAsyncDataReconciliations: async function () {
+                this.isLoading = true;
+                const params = [
+                    'api_key=bb6f51bef07465653c3e553d6ab161a8',
+                    `sort_by=${this.sortField}.${this.sortOrder}`,
+                    `page=${this.page}`,
+                    `category=${this.selectMenu}`
+                ].join('&')
+
+                let todos = [];
+                let allTotal = 0
+                await axios.get(process.env.MIX_HTTP + window.location.hostname + '/all/people/reconciliations',
+                    {
+                        params: {
+                            data: params,
+                            user_id: this.user_id
+                        }
+                    })
+                    .then((response) => todos = [...response.data])
+                    .catch(error => console.log(error))
+                this.totalReconciliations = []
+                todos.forEach((value, index) => {
+                    this.dataReconciliations.push(value);
+                    allTotal++;
+                });
+                this.totalReconciliations = allTotal
                 this.isLoading = false;
             },
             onPageChange(page) {
@@ -213,6 +309,7 @@
         },
         created() {
             this.loadAsyncData();
+            this.loadAsyncDataReconciliations();
         },
         computed: {},
         watch: {

@@ -1300,14 +1300,22 @@ class TicketController extends Controller
 
     }
 
+    /*
+     * получаем всех исполнителей и их задачи/согласования
+     */
+
     public
     function allPeopleWork(Request $request)
     {
         $user = User::all();
 
-        foreach ($user as $key=>$item) {
+        foreach ($user as $key => $item) {
             $i = count($item->performers);
-             $user->performer = $i;
+            $user->performer = $i;
+        }
+        foreach ($user as $key => $item) {
+            $i = count($item->reconciliations);
+            $user->reconciliations = $i;
         }
         return $user;
     }
@@ -1315,16 +1323,39 @@ class TicketController extends Controller
     public
     function showPeopleWork(Request $request)
     {
-        return view('people.tickets', ['user_id'=>$request->id]);
+        return view('people.tickets', ['user_id' => $request->id]);
     }
+
+    /*
+     * Получение задач на исполнение
+     */
     public
     function dataPeopleWork(Request $request)
     {
 
-        $user = User::where('id','=',$request->id)->first();
+        $user = User::where('id', '=', $request->user_id)->first();
 
         $all = [];
-        foreach($user->performers as $item){
+
+        foreach ($user->performers as $item) {
+            $ticket = Ticket::find(($item['ticket_id']));
+            array_push($all, $ticket);
+        }
+
+        return $all;
+    }
+    /*
+     * Получение задач на согласование
+     */
+    public
+    function dataPeopleReconciliations(Request $request)
+    {
+
+        $user = User::where('id', '=', $request->user_id)->first();
+
+        $all = [];
+
+        foreach ($user->reconciliations as $item) {
             $ticket = Ticket::find(($item['ticket_id']));
             array_push($all, $ticket);
         }
