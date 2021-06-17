@@ -20,7 +20,7 @@
                 </div>
                 <div class="columns" v-if="arrZakazStatusArch.length>0">
                     <div class="column">
-                        <b-field class="mb-0" label="История согласования">
+                        <b-field class="mb-0" label="История заказчика">
                         </b-field>
                         <div v-for="item in arrZakazStatusArch">
                             <span class="tag">{{item.user}}:</span>
@@ -38,6 +38,19 @@
                             <span class="tag">{{item.user}}:</span>
                             <span class="tag">{{item.created_at}}</span>
                             <span class="">{{ soglTextSearch(item.status)}}</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="columns" v-if="arrIsplProcentArch.length>0">
+                    <div class="column">
+                        <b-field class="mb-0" label="Процесс работы">
+                        </b-field>
+                        <div v-for="item in arrIsplProcentArch">
+                            <span class="tag">{{item.user}}:</span>
+                            <span class="tag">{{item.created_at}}</span>
+                            <span class=""><b>{{ item.procent}}%</b></span>
                         </div>
 
                     </div>
@@ -162,6 +175,38 @@
                             </select>
                         </div>
                         <button class="button is-link is-small" v-on:click="addStatusIspl">Send</button>
+                    </div>
+                </div>
+                <div class="column">
+                    <b-field class="mb-0" label="Выполнено %">
+                    </b-field>
+
+                    <div v-if="editIspl">
+                        <div class="select is-small mr-1" style="float: left">
+                            <select v-model="statusProcent">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                                <option value="35">35</option>
+                                <option value="40">40</option>
+                                <option value="45">45</option>
+                                <option value="50">50</option>
+                                <option value="55">55</option>
+                                <option value="60">60</option>
+                                <option value="65">65</option>
+                                <option value="70">70</option>
+                                <option value="75">75</option>
+                                <option value="80">80</option>
+                                <option value="85">85</option>
+                                <option value="90">90</option>
+                                <option value="95">95</option>
+                                <option value="100">100</option>
+                            </select>
+                        </div>
+                        <button class="button is-link is-small" v-on:click="addProcentIspl">Send</button>
                     </div>
                 </div>
                 <div class="column">
@@ -404,12 +449,14 @@
             return {
                 arrIsplStatusArch: this.ispl,
                 arrSoglStatusArch: this.sogl,
-                arrZakazStatusArch: this.zakaz,
+                arrZakazStatusArch:this.zakaz,
+                arrIsplProcentArch:this.procentispl,
 
                 editIspl: false,
                 editSogl: false,
                 editZakaz:false,
 
+                statusProcent: this.ticket.tekProcentIspl,
                 statusIspl: this.ticket.tekStatusIspl,
                 statusSogl: this.ticket.tekStatusSogl,
                 statusZakaz: this.ticket.tekStatusZakaz,
@@ -513,6 +560,9 @@
             ispl: {
                 type: Object,
             },
+            procentispl: {
+                type: Object,
+            },
             sogl: {
                 type: Object,
             },
@@ -579,7 +629,6 @@
                     }
                 );
 
-                console.log(response.data)
                 this.form = new FormData()
                 this.isLoading = false;
                 location.reload();
@@ -601,10 +650,9 @@
                     }
                 );
 
-                console.log(response.data)
                 this.form = new FormData()
                 this.isLoading = false;
-                location.reload();
+                 location.reload();
 
             },
             addStatusSogl: async function () {
@@ -623,7 +671,26 @@
                     }
                 );
 
-                console.log(response.data)
+                this.form = new FormData()
+                this.isLoading = false;
+                 location.reload();
+            },
+            addProcentIspl: async function () {
+                this.isLoading = true;
+
+                this.form.append('procent', this.statusProcent)
+                this.form.append('id', this.id)
+
+                let response = await axios.post(process.env.MIX_HTTP + window.location.hostname + '/add/procent/ispl',
+                    this.form,
+                    {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'multipart/form-data; boundary=${form._boundary}'
+                        },
+                    }
+                );
+
                 this.form = new FormData()
                 this.isLoading = false;
                 location.reload();

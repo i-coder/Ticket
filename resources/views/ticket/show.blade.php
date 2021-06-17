@@ -3,6 +3,7 @@
 @section('content')
     <div class="">
         <ticket-show-component
+            :procentispl='{!! json_encode($procentispl) !!}'
             :zakaz='{!! json_encode($zakaz) !!}'
             :sogl='{!! json_encode($sogl) !!}'
             :ispl='{!! json_encode($ispl) !!}'

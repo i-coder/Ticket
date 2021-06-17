@@ -40,6 +40,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/add/status/ispl', 'TicketController@addStatusIspl')->name('addStatusIspl');
     Route::post('/add/status/sogl', 'TicketController@addStatusSogl')->name('addStatusSogl');
     Route::post('/real/status/ticket', 'TicketController@realStatusTicket')->name('realStatusTicket');
+    Route::post('/add/procent/ispl', 'TicketController@addProcentIspl')->name('addProcentIspl');
 
     Route::post('/deleteExistingFile', 'TicketController@deleteExistingFile')->name('deleteExistingFile');
 

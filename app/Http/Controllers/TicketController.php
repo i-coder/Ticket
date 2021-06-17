@@ -13,6 +13,7 @@ use App\Reconciliation;
 use App\Subdivision;
 use App\SubdivisionName;
 use App\Ticket;
+use App\TicketProcent;
 use App\TicketStatus;
 use App\User;
 use Carbon\Carbon;
@@ -415,14 +416,29 @@ class TicketController extends Controller
             $ticket['ispl'] = null;
         }
 
+
         $ticketStZakaz = TicketStatus::where('ticket_id', '=', $id)->where('roll', '=', TicketStatus::ZAKA)->orderBy('id', 'DESC')->get();
         $ticketStIspl = TicketStatus::where('ticket_id', '=', $id)->where('roll', '=', TicketStatus::ISPL)->orderBy('id', 'DESC')->get();
         $ticketStSogl = TicketStatus::where('ticket_id', '=', $id)->where('roll', '=', TicketStatus::SOGL)->orderBy('id', 'DESC')->get();
+        $ticketProcentSpl = TicketProcent::where('ticket_id', '=', $id)->orderBy('id', 'DESC')->get();
 
         $arrZakazStatus = [];
         $arrIsplStatus = [];
         $arrSoglStatus = [];
+        $arrIsplProcent = [];
 
+        $b = 0;
+        foreach ($ticketProcentSpl as $item) {
+            $u = User::find($item->user_id);
+            if (empty($u->f) or empty($u->i)) {
+                $arrIsplProcent[$b]['user'] = 'Неизвестно';
+            } else {
+                $arrIsplProcent[$b]['user'] = $u->f . ' ' . $u->i . ' ' . $u->o;
+            }
+            $arrIsplProcent[$b]['procent'] = $item->procent;
+            $arrIsplProcent[$b]['created_at'] = \Carbon\Carbon::parse($item->created_at)->format('d.m.Y H:i:s');//TODO время карбон!
+            $b++;
+        }
         $w = 0;
         foreach ($ticketStZakaz as $item) {
             $u = User::find($item->user_id);
@@ -559,6 +575,10 @@ class TicketController extends Controller
             ->where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->first();
+        $tekProcentIspl = DB::table('table_procent_ticket')
+            ->where('ticket_id', '=', $request->id)
+            ->orderBy('created_at', 'desc')
+            ->first();
 
         if ($tekStatusZakaz) {
             $ticket['tekStatusZakaz'] = $tekStatusZakaz->status;
@@ -575,11 +595,17 @@ class TicketController extends Controller
         } else {
             $ticket['tekStatusSogl'] = null;
         }
+        //процент исполнения
+        if ($tekProcentIspl) {
+            $ticket['tekProcentIspl'] = $tekProcentIspl->procent;
+        } else {
+            $ticket['tekProcentIspl'] = null;
+        }
 
 
         $customer = SubdivisionName::find($ticket->customer);
-
-        return view('ticket.show', ['zakaz' => $arrZakazStatus, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => User::find($ticket->id_user), 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
+//dd(['zakaz' => $arrZakazStatus, 'procentispl'=>$arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => User::find($ticket->id_user), 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
+        return view('ticket.show', ['zakaz' => $arrZakazStatus, 'procentispl'=>$arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => User::find($ticket->id_user), 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
     }
 
     public function realStatusTicket(Request $request)
@@ -597,6 +623,29 @@ class TicketController extends Controller
         }
 
         return count($r) . '/' . count($ticket->reconciliation);
+    }
+
+    /*
+     * Процент выполненой работы
+     */
+    public function addProcentIspl(Request $request)
+    {
+
+        $isplProcent = (int)$request->procent;
+        $id = (int)$request->id;
+
+        if ((int)$isplProcent != "null") {
+            $max = TicketProcent::max('procent');
+            if ($max < $isplProcent) {
+                $newStatusSogl = [
+                    'user_id' => Auth::id(),
+                    'procent' => $isplProcent,
+                    'ticket_id' => $id,
+                ];
+                TicketProcent::create($newStatusSogl);
+            }
+
+        }
     }
 
     public
@@ -1344,6 +1393,7 @@ class TicketController extends Controller
 
         return $all;
     }
+
     /*
      * Получение задач на согласование
      */
