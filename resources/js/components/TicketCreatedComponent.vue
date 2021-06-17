@@ -36,6 +36,7 @@
                                 <option value="1">Согласование</option>
                                 <option value="2">Задача</option>
                                 <option value="3">Служебка</option>
+                                <option value="4">Автоматизация</option>
                             </b-select>
                         </b-field>
                     </div>

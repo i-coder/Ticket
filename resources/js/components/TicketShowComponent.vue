@@ -209,7 +209,7 @@
                         <button class="button is-link is-small" v-on:click="addProcentIspl">Send</button>
                     </div>
                 </div>
-                <div class="column">
+                <div class="column" v-if="existingFiles.length>0">
                     <b-field class="mb-0" label="Файлы"></b-field>
                     <div class="tags">
                         <div v-for="(file, index) in existingFiles"
@@ -222,7 +222,7 @@
 
 
                 <div class="column">
-                    <b-field label="Статус">
+                    <b-field label="Статус согласования">
                         <div>{{statusTicket}}</div>
                     </b-field>
                 </div>
@@ -239,6 +239,7 @@
                         <div v-if="status == 1">Согласование</div>
                         <div v-if="status == 2">Задача</div>
                         <div v-if="status == 3">Служебка</div>
+                        <div v-if="status == 4">Автоматизация</div>
                     </b-field>
                 </div>
                 <div class="column">
