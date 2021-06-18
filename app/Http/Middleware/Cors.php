@@ -22,7 +22,7 @@ class Cors
             ->header('Access-Control-Allow-Origin', 'http://192.168.5.129')
             ->header('Access-Control-Allow-Methods', '*')
             ->header('Access-Control-Allow-Credentials', true)
-            ->header('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,X-Token-Auth,Authorization,X-Auth-Token')
+            ->header('Access-Control-Allow-Headers', 'x-csrf-token, x-requested-with,content-type,x-token-auth, authorization, x-auth-token')
             ->header('Accept', 'application/json');
     }
 
