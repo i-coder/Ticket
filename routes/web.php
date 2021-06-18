@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth', 'cors']], function () {
     Route::get('/', 'HomeController@index')->name('index');
 
     Route::get('/store', 'HomeController@store')->name('store');

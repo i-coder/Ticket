@@ -18,4 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/store/','ticketController@store')->name('ticket_store');
+Route::post('/store/','ticketController@store')->middleware('cors')->name('ticket_store');
