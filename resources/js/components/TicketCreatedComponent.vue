@@ -434,7 +434,7 @@
                     this.form.append('files[]', item)
                 })
 
-                let response = await axios.post(/*process.env.MIX_HTTP + window.location.hostname*/ 'http://ticket.test' + '/save',
+                let response = await axios.post(process.env.MIX_HTTP + window.location.hostname + '/save',
                     this.form,
                     {
                         headers: {
