@@ -179,7 +179,7 @@
                 </div>
                 <div class="column">
                     <b-field class="mb-0" label="Выполнено">
-                        <div v-if="!editIspl"> - <b>{{statusProcent}}%</b></div>
+                        <div v-if="!editIspl"> - <b v-if="!statusProcent">0</b> <b v-if="statusProcent">{{statusProcent}}</b>%</div>
                     </b-field>
 
                     <div v-if="editIspl">
