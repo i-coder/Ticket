@@ -104,13 +104,13 @@ class TicketController extends Controller
 
         $newTicket = Ticket::create($ticketData);
 
-        try {
-            $request->validate([
-                'file.*' => 'mimes:jpeg,png,txt,pdf,xls,jpg,bmp,gif,doc,docx,pdf',
-            ]);
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Неправильный формат загруженного файла');
-        }
+//        try {
+//            $request->validate([
+//                'file.*' => 'mimes:jpeg,png,txt,pdf,xls,jpg,bmp,gif,doc,docx,pdf',
+//            ]);
+//        } catch (\Exception $e) {
+//            return redirect()->back()->with('error', 'Неправильный формат загруженного файла');
+//        }
 
         if (isset($uploadedFiles['files'])) {
             foreach ($uploadedFiles['files'] as $uploadedFile) {
