@@ -15,20 +15,12 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'web/'],
-
+    'paths' => ['/*'],
     'allowed_methods' => ['*'],
-
-    'allowed_origins' => ['*'],
-
+    'allowed_origins' => ['*'],  // <-- it works but it should not be like that
     'allowed_origins_patterns' => [],
-
-    'allowed_headers' => ['*'],
-
-    'exposed_headers' => [],
-
+    'allowed_headers' => ['content-type', 'accept', 'x-custom-header', 'Access-Control-Allow-Origin'],
+    'exposed_headers' => ['x-custom-response-header'],
     'max_age' => 0,
-
     'supports_credentials' => false,
-
 ];
