@@ -1388,7 +1388,13 @@ class TicketController extends Controller
         $all = [];
 
         foreach ($user->performers as $item) {
-            $ticket = Ticket::find(($item['ticket_id']));
+            $ticket = Ticket::where('id','=',$item['ticket_id'])->first()->toArray();
+
+            $tekStatusIspl = DB::table('ticket_status')
+                ->where('ticket_id', '=', $item['ticket_id'])
+                ->orderBy('created_at', 'desc')
+                ->first();
+            $ticket['work_status'] = ($tekStatusIspl) ? (int)$tekStatusIspl->status : null;
             array_push($all, $ticket);
         }
 
@@ -1407,7 +1413,12 @@ class TicketController extends Controller
         $all = [];
 
         foreach ($user->reconciliations as $item) {
-            $ticket = Ticket::find(($item['ticket_id']));
+            $ticket = Ticket::where('id','=',$item['ticket_id'])->first()->toArray();
+            $tekStatusIspl = DB::table('ticket_status')
+                ->where('ticket_id', '=', $item['ticket_id'])
+                ->orderBy('created_at', 'desc')
+                ->first();
+            $ticket['sogl_status'] = ($tekStatusIspl) ? (int)$tekStatusIspl->status : null;
             array_push($all, $ticket);
         }
 

@@ -33,26 +33,25 @@
                     aria-previous-label="Previous page"
                     aria-page-label="Page"
                     aria-current-label="Current page">
-                    <b-table-column field="id" label="ID" width="40" sortable numeric v-slot="props">
+                    <b-table-column field="id" label="№" width="40" sortable numeric v-slot="props">
                         {{ props.row.id }}
                     </b-table-column>
-                    <b-table-column field="title" label="Title" sortable v-slot="props">
+                    <b-table-column field="title" label="Наименование" sortable v-slot="props">
                         {{ props.row.title }}
                     </b-table-column>
-                    <b-table-column field="date_start" label="Start" sortable v-slot="props">
+                    <b-table-column field="date_start" label="Начало" sortable v-slot="props">
                         {{ props.row.date_start }}
                     </b-table-column>
-                    <b-table-column field="date_start" label="End" sortable v-slot="props">
+                    <b-table-column field="date_start" label="Конец" sortable v-slot="props">
                         {{ props.row.date_end }}
                     </b-table-column>
-                    <b-table-column field="work_status" label="Work status" width="150" sortable v-slot="props">
-                        {{ isplTextSearch(props.row.work_status) }}
+                    <b-table-column field="work_status" label="Раб статус" width="150" sortable v-slot="props">
+                        <span class="tag is-success" v-if="props.row.work_status==1 || props.row.work_status==2"> {{ isplTextSearch(props.row.work_status) }}</span>
+                        <span class="tag is-danger" v-if="props.row.work_status>2 || props.row.work_status==null"> {{ isplTextSearch(props.row.work_status) }}</span>
                     </b-table-column>
-                    <b-table-column field="sogl_status" label="Reconciliation" width="150" sortable v-slot="props">
-                        {{ soglTextSearch(props.row.sogl_status) }}
-                    </b-table-column>
-                    <b-table-column field="action" label="Actions" width="40" sortable v-slot="props">
-                        <a :href="'/show?id=' + props.row.id">open</a>
+
+                    <b-table-column field="action" label="Действие" width="40" sortable v-slot="props">
+                        <a :href="'/show?id=' + props.row.id">Открыть</a>
                     </b-table-column>
                 </b-table>
             </div>
@@ -101,11 +100,10 @@
                     <b-table-column field="date_start" label="Конец" sortable v-slot="props">
                         {{ props.row.date_end }}
                     </b-table-column>
-                    <b-table-column field="work_status" label="Раб статус" width="150" sortable v-slot="props">
-                        {{ isplTextSearch(props.row.work_status) }}
-                    </b-table-column>
+
                     <b-table-column field="sogl_status" label="Сог статус" width="150" sortable v-slot="props">
-                        {{ soglTextSearch(props.row.sogl_status) }}
+                        <span class="tag is-success" v-if="props.row.sogl_status==2"> {{ soglTextSearch(props.row.sogl_status) }}</span>
+                        <span class="tag is-danger" v-if="props.row.sogl_status!=2"> {{ soglTextSearch(props.row.sogl_status) }}</span>
                     </b-table-column>
                     <b-table-column field="action" label="Действие" width="40" sortable v-slot="props">
                         <a :href="'/show?id=' + props.row.id">Открыть</a>
@@ -158,7 +156,7 @@
                     {id: 4, name: 'Оценка работы 4'},
                     {id: 5, name: 'Оценка работы 5'},
                 ],
-                noStatus: 'no change',
+                noStatus: 'без статуса',
                 countTicketNoStatus: null
             }
         },
