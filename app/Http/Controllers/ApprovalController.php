@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Reconciliation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Контроллер для раздела на согласование.
@@ -20,5 +22,6 @@ class ApprovalController extends Controller
     public function listTicketsForApproval()
     {
         return view('approval.list');
+
     }
 }

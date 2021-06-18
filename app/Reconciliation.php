@@ -35,4 +35,8 @@ class Reconciliation extends Model
     {
         return $this->hasMany('App\Ticket','id','ticket_id');
     }
+    public function getStatus()
+    {
+        return $this->hasMany('App\TicketStatus','ticket_id', 'ticket_id');
+    }
 }

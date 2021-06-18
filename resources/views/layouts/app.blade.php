@@ -1,3 +1,26 @@
+<?php
+
+use App\Performer;
+use App\Reconciliation;
+
+$recon = Reconciliation::where('subdivision_id','=',Auth::id())->get();
+$iSogl=0;
+foreach($recon as $item){
+    if(count($item->getStatus)==0){
+        $iSogl++;
+    }
+}
+
+$recon = Performer::where('user_id','=',Auth::id())->get();
+$iIspl=0;
+foreach($recon as $item){
+    if(count($item->getStatus)==0){
+        $iIspl++;
+    }
+}
+
+?>
+
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -58,17 +81,20 @@
                     Создать
                 </a>
                 <a class="navbar-item" href="/approval">
-                    <span class="icon is-left mr-1">
-                       <i class="fa fa-check-square" aria-hidden="true"></i>
-                    </span>
-                    На согласование
+
+                    <div class="tags has-addons">
+                        <span class="tag">На согласование</span>
+                        <span class="tag is-danger">{{$iSogl}}</span>
+                    </div>
+
                 </a>
                 <a class="navbar-item" href="/you/tickets">
 
-                            <span class="icon is-left mr-1">
-                       <i class="fa fa-bell" aria-hidden="true"></i>
-                    </span>
-                    На исполнение
+                    <div class="tags has-addons">
+                        <span class="tag">На исполнение</span>
+                        <span class="tag is-danger">{{$iIspl}}</span>
+                    </div>
+
                 </a>
             </div>
 
