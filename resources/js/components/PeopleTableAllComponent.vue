@@ -32,20 +32,23 @@
                 aria-previous-label="Previous page"
                 aria-page-label="Page"
                 aria-current-label="Current page">
-                <b-table-column field="id" label="ID" width="40" sortable numeric v-slot="props">
+                <b-table-column field="id" label="N" width="40" sortable numeric v-slot="props">
                     {{ props.row.id }}
                 </b-table-column>
-                <b-table-column field="title" label="Title" sortable v-slot="props">
+                <b-table-column field="title" label="Ф.И.О" sortable v-slot="props">
                     {{ props.row.f }}
                     {{ props.row.i }}
                     {{ props.row.o }}
                 </b-table-column>
-                <b-table-column field="count_ticket" label="Count ticket" sortable v-slot="props">
+                <b-table-column field="count_ticket" label="На исполнение" sortable v-slot="props">
                     {{ props.row.performers.length }}
                 </b-table-column>
+                <b-table-column field="count_ticket" label="На согласование" sortable v-slot="props">
+                    {{ props.row.reconciliations.length }}
+                </b-table-column>
 
-                <b-table-column field="action" label="Actions" width="40" sortable  v-slot="props">
-                   <a :href="'/all/people/show?id=' + props.row.id">open</a>
+                <b-table-column field="action" label="Дествие" width="40" sortable  v-slot="props">
+                   <a :href="'/all/people/show?id=' + props.row.id" class="btn btn-light">Открыть</a>
                 </b-table-column>
             </b-table>
         </div>

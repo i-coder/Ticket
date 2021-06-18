@@ -137,7 +137,7 @@
                                 <option value="5">Оценка работы 5</option>
                             </select>
                         </div>
-                        <button class="button is-link is-small" v-on:click="addStatusZakaz">Send</button>
+                        <button class="button is-link is-small" v-on:click="addStatusZakaz">Записать</button>
                     </div>
                 </div>
                 <div class="column">
@@ -154,7 +154,7 @@
                                 <option value="2">согласовано</option>
                             </select>
                         </div>
-                        <button class="button is-link is-small" v-on:click="addStatusSogl">Send</button>
+                        <button class="button is-link is-small" v-on:click="addStatusSogl">Записать</button>
                     </div>
                 </div>
                 <div class="column">
@@ -174,11 +174,12 @@
                                 <option value="5">пауза</option>
                             </select>
                         </div>
-                        <button class="button is-link is-small" v-on:click="addStatusIspl">Send</button>
+                        <button class="button is-link is-small" v-on:click="addStatusIspl">Записать</button>
                     </div>
                 </div>
                 <div class="column">
-                    <b-field class="mb-0" label="Выполнено %">
+                    <b-field class="mb-0" label="Выполнено">
+                        <div v-if="!editIspl"> - <b>{{statusProcent}}%</b></div>
                     </b-field>
 
                     <div v-if="editIspl">
@@ -206,7 +207,7 @@
                                 <option value="100">100</option>
                             </select>
                         </div>
-                        <button class="button is-link is-small" v-on:click="addProcentIspl">Send</button>
+                        <button class="button is-link is-small" v-on:click="addProcentIspl">Записать</button>
                     </div>
                 </div>
                 <div class="column" v-if="existingFiles.length>0">
@@ -223,7 +224,7 @@
 
                 <div class="column">
                     <b-field label="Статус согласования">
-                        <div>{{statusTicket}}</div>
+                        <div>- <b>{{statusTicket}}</b></div>
                     </b-field>
                 </div>
 

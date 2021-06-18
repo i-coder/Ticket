@@ -57,26 +57,26 @@
                 aria-previous-label="Previous page"
                 aria-page-label="Page"
                 aria-current-label="Current page">
-                <b-table-column field="id" label="ID" width="40" sortable numeric v-slot="props">
+                <b-table-column field="id" label="№" width="40" sortable numeric v-slot="props">
                     {{ props.row.id }}
                 </b-table-column>
-                <b-table-column field="title" label="Title" sortable v-slot="props">
+                <b-table-column field="title" label="Наименование" sortable v-slot="props">
                     {{ props.row.title }}
                 </b-table-column>
-                <b-table-column field="date_start" label="Start" sortable v-slot="props">
+                <b-table-column field="date_start" label="Начало" sortable v-slot="props">
                     {{ props.row.date_start }}
                 </b-table-column>
-                <b-table-column field="date_start" label="End" sortable v-slot="props">
+                <b-table-column field="date_start" label="Конец" sortable v-slot="props">
                     {{ props.row.date_end }}
                 </b-table-column>
-                <b-table-column field="work_status" label="Work status" width="150" sortable v-slot="props">
+                <b-table-column field="work_status" label="Раб статус" width="150" sortable v-slot="props">
                     {{ isplTextSearch(props.row.work_status) }}
                 </b-table-column>
-                <b-table-column field="sogl_status" label="Reconciliation" width="150" sortable v-slot="props">
+                <b-table-column field="sogl_status" label="Сог статус" width="150" sortable v-slot="props">
                     {{ soglTextSearch(props.row.sogl_status) }}
                 </b-table-column>
-                <b-table-column field="action" label="Actions" width="40" sortable v-slot="props">
-                    <a :href="'/show?id=' + props.row.id">open</a>
+                <b-table-column field="action" label="Действие" width="40" sortable v-slot="props">
+                    <a :href="'/show?id=' + props.row.id">Открыть</a>
                 </b-table-column>
             </b-table>
         </div>
