@@ -71,10 +71,12 @@
                     {{ props.row.date_end }}
                 </b-table-column>
                 <b-table-column field="work_status" label="Раб статус" width="150" sortable v-slot="props">
-                    {{ isplTextSearch(props.row.work_status) }}
+                    <span class="tag is-success" v-if="props.row.work_status==1 || props.row.work_status==2"> {{ isplTextSearch(props.row.work_status) }}</span>
+                    <span class="tag is-danger" v-if="props.row.work_status>2 || props.row.work_status==null"> {{ isplTextSearch(props.row.work_status) }}</span>
                 </b-table-column>
                 <b-table-column field="sogl_status" label="Сог статус" width="150" sortable v-slot="props">
-                    {{ soglTextSearch(props.row.sogl_status) }}
+                    <span class="tag is-success" v-if="props.row.sogl_status==2"> {{ soglTextSearch(props.row.sogl_status) }}</span>
+                    <span class="tag is-danger" v-if="props.row.sogl_status!=2"> {{ soglTextSearch(props.row.sogl_status) }}</span>
                 </b-table-column>
                 <b-table-column field="action" label="Действие" width="40" sortable v-slot="props">
                     <a :href="'/show?id=' + props.row.id">Открыть</a>
@@ -102,43 +104,19 @@
                 total: 0,
                 selected: null,
                 data: [],
-                columns: [
-                    {
-                        field: 'id',
-                        label: 'ID',
-                        width: '40',
-                        numeric: true
-                    },
-                    {
-                        field: 'title',
-                        label: 'Название',
-                    },
-
-
-                    {
-                        field: 'status',
-                        label: 'Cтатус',
-                        centered: true
-                    },
-                    {
-                        field: 'actions',
-                        label: 'Действия',
-                        centered: true,
-                    },
-                ],
                 draggingRow: null,
                 draggingRowIndex: null,
                 menu: [],
                 soglText: [
-                    {id: 1, name: 'Не согласован'},
-                    {id: 2, name: 'Cогласован'},
+                    {id: 1, name: 'не согласован'},
+                    {id: 2, name: 'cогласован'},
                 ],
                 isplText: [
-                    {id: 1, name: 'Сделано'},
-                    {id: 2, name: 'В работе'},
-                    {id: 3, name: 'Не готово'},
-                    {id: 4, name: 'Тестирование'},
-                    {id: 5, name: 'Пауза'},
+                    {id: 1, name: 'сделано'},
+                    {id: 2, name: 'в работе'},
+                    {id: 3, name: 'не готово'},
+                    {id: 4, name: 'тестирование'},
+                    {id: 5, name: 'пауза'},
                 ],
                 zakazText: [
                     {id: 1, name: 'Оценка работы 1'},
@@ -147,7 +125,7 @@
                     {id: 4, name: 'Оценка работы 4'},
                     {id: 5, name: 'Оценка работы 5'},
                 ],
-                noStatus: 'no change',
+                noStatus: 'без статуса',
                 countTicketNoStatus:null
             }
         },
@@ -165,6 +143,7 @@
                     return this.noStatus;
                 }
                 return u.name;
+
             },
             isplTextSearch(d) {
                 var u = this.isplText.find(item => item.id == d)
