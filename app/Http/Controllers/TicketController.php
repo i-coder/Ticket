@@ -352,8 +352,8 @@ class TicketController extends Controller
             }
         }
 
-
-        return json_encode(['id' => $newIdComment->id, 'comment' => $request->comment, 'date' => $newIdComment->created_at, 'files' => json_encode($files), 'users' => User::find(Auth::id())->name]);
+        $realName = User::find(Auth::id());
+        return json_encode(['id' => $newIdComment->id, 'comment' => $request->comment, 'date' => $newIdComment->created_at, 'files' => json_encode($files), 'users' => $realName->f.' '.$realName->i.' '.$realName->o ]);
 
     }
 
@@ -509,7 +509,7 @@ class TicketController extends Controller
                         $toArray[] = $item->file;
                     }
                 }
-                $fio = User::find($comment->user_id)->first();
+                $fio = User::where('id','=',$comment->user_id)->first();
                 $comments_data[] = (object)[
                     'id' => $comment->id,
                     'ticket_id' => $comment->ticket_id,
