@@ -24,7 +24,7 @@ class Cors
             ->header('Access-Control-Allow-Credentials', true)
             ->header('Access-Control-Allow-Headers', 'x-csrf-token, x-requested-with, content-type, x-token-auth, authorization, x-auth-token')
             ->header('Accept', 'application/json')
-            ->header('Content-Type', 'multipart/form-data');
+            ->header('Accept', 'multipart/form-data');
     }
 
 }
