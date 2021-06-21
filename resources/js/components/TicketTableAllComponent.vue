@@ -2,7 +2,7 @@
     <div class="columns p-2">
         <b-loading :is-full-page="isFullPage" v-model="isLoading" :can-cancel="false">
         </b-loading>
-        <div class="column is-3 is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
+        <div class="column is-3">
             <div class="field is-grouped is-grouped-multiline">
                 <div class="control">
                     <div class="tags has-addons">
@@ -89,9 +89,7 @@
                     <span class="tag is-success" v-if="props.row.sogl_status==2"> {{ soglTextSearch(props.row.sogl_status) }}</span>
                     <span class="tag is-danger" v-if="props.row.sogl_status!=2"> {{ soglTextSearch(props.row.sogl_status) }}</span>
                 </b-table-column>
-                <b-table-column field="action" label="Действие" width="40" sortable v-slot="props">
-                    <a :href="'/show?id=' + props.row.id">Открыть</a>
-                </b-table-column>
+
             </b-table>
         </div>
     </div>
