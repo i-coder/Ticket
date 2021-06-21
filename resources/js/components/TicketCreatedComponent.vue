@@ -405,10 +405,10 @@
             },
             sendDataRequest: async function () {
 
-                /*   if(this.validateForm()){
+                   if(this.validateForm()){
                        this.warning()
                        return
-                   }*/
+                   }
                 this.isLoading = true;
 
                 //сохранение задачи
