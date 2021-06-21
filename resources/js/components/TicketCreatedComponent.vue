@@ -379,22 +379,22 @@
 
             validateForm() {
                 if (this.users.length == 0) {
-                    return true;
+                    return false;
                 }
                 if (this.checkboxGroup.length == 0) {
-                    return true;
+                    return false;
                 }
                 if (this.editorData == null) {
-                    return true;
+                    return false;
                 }
                 if (this.task == null) {
-                    return true;
+                    return false;
                 }
                 if (this.priority == null) {
-                    return true;
+                    return false;
                 }
                 if (this.dates.length == 0) {
-                    return true;
+                    return false;
                 }
                 return true;
                 /*return false;*/
@@ -405,7 +405,7 @@
             },
             sendDataRequest: async function () {
 
-                   if(this.validateForm()){
+                   if(!this.validateForm()){
                        this.warning()
                        return
                    }
