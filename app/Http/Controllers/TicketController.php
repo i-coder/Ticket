@@ -1101,7 +1101,7 @@ class TicketController extends Controller
 //            $sort['date_start'][$k] = $v['date_start'];
 //        }
 //        array_multisort($sort['status'], SORT_ASC, $sort['date_start'], SORT_ASC, $ticketsInfo);
-
+dump($ticketsInfo);
         return json_encode($ticketsInfo);
     }
 
@@ -1393,6 +1393,7 @@ class TicketController extends Controller
 
             $tekStatusIspl = DB::table('ticket_status')
                 ->where('ticket_id', '=', $item['ticket_id'])
+                ->where('roll', TicketStatus::ISPL)
                 ->orderBy('created_at', 'desc')
                 ->first();
             $ticket['work_status'] = ($tekStatusIspl) ? (int)$tekStatusIspl->status : null;
@@ -1417,6 +1418,7 @@ class TicketController extends Controller
             $ticket = Ticket::where('id', '=', $item['ticket_id'])->first()->toArray();
             $tekStatusIspl = DB::table('ticket_status')
                 ->where('ticket_id', '=', $item['ticket_id'])
+                ->where('roll', TicketStatus::SOGL)
                 ->orderBy('created_at', 'desc')
                 ->first();
             $ticket['sogl_status'] = ($tekStatusIspl) ? (int)$tekStatusIspl->status : null;
