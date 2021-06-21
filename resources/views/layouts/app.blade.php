@@ -39,7 +39,11 @@ foreach($recon as $item){
     <link href="{{ asset('css/materialdesignicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/all.css') }}" rel="stylesheet">
 
-
+<style>
+    body{
+        font-size: 12px !important;
+    }
+</style>
 </head>
 <body>
 <div id="app" class="">
