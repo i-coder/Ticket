@@ -702,7 +702,7 @@ class TicketController extends Controller
                     'type_task' => $type_task,
                     'date_start' => $date_start,
                     'date_end' => $date_end,
-                    'performers' => $performersInfo,
+                    'performers' => $performers,
                     'actions' => $actions,
                     'work_status' => ($tekStatusIspl) ? (int)$tekStatusIspl->status : null,
                     'sogl_status' => ($tekStatusSogl) ? (int)$tekStatusSogl->status : null,
@@ -898,7 +898,7 @@ class TicketController extends Controller
     }
 
     public
-    function youTickets(Request $request)
+    function dataGetOutgoing(Request $request)
     {
 
         $findProperty = explode("&", $request->data);
@@ -948,7 +948,7 @@ class TicketController extends Controller
                     'type_task' => $type_task,
                     'date_start' => $date_start,
                     'date_end' => $date_end,
-                    'performers' => $performersInfo,
+                    'performers' => $performers,
                     'actions' => $actions,
                     'work_status' => ($tekStatusIspl) ? (int)$tekStatusIspl->status : null,
                     'sogl_status' => ($tekStatusSogl) ? (int)$tekStatusSogl->status : null,
@@ -1424,4 +1424,12 @@ class TicketController extends Controller
 
         return $all;
     }
+
+    /**
+     * Исходящие
+     */
+    public function actionGetOutgoing(){
+        return view('outgoing.index');
+    }
+
 }

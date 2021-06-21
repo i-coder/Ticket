@@ -64,6 +64,10 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
         Route::get('/people/ticket', 'TicketController@dataPeopleWork')->name('dataPeopleWork');
         Route::get('/people/reconciliations', 'TicketController@dataPeopleReconciliations')->name('dataPeopleReconciliations');
     });
+    Route::prefix('/outgoing')->group(function () {
+        Route::get('/', 'TicketController@actionGetOutgoing')->name('actionGetOutgoing');
+        Route::get('/data', 'TicketController@dataGetOutgoing')->name('dataGetOutgoing');
+    });
 });
 
 //Route::post('auth', 'TicketController@auth')->name('auth');

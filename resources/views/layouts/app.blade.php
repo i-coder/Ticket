@@ -83,7 +83,8 @@ foreach($recon as $item){
                 <a class="navbar-item" href="/approval">
 
                     <div class="tags has-addons">
-                        <span class="tag">На согласование</span>
+                        <span class="tag">Входящие </span>
+                        <span class="tag is-info">на согласование</span>
                         <span class="tag is-danger">{{$iSogl}}</span>
                     </div>
 
@@ -91,8 +92,16 @@ foreach($recon as $item){
                 <a class="navbar-item" href="/you/tickets">
 
                     <div class="tags has-addons">
-                        <span class="tag">На исполнение</span>
+                        <span class="tag">Входящие </span>
+                        <span class="tag is-info">на исполнение</span>
                         <span class="tag is-danger">{{$iIspl}}</span>
+                    </div>
+
+                </a>
+                <a class="navbar-item" href="/outgoing">
+
+                    <div class="tags has-addons">
+                        <span class="tag">Исходящие</span>
                     </div>
 
                 </a>

@@ -2,7 +2,7 @@
     <div class="columns p-2">
         <b-loading :is-full-page="isFullPage" v-model="isLoading" :can-cancel="false">
         </b-loading>
-        <div class="column is-3 is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
+        <div class="column is-3">
             <div class="field is-grouped is-grouped-multiline">
                 <div class="control">
                     <div class="tags has-addons">
@@ -11,7 +11,7 @@
                     </div>
                 </div>
             </div>
-            <div class="" style="">
+            <div class="" style="position: fixed ">
                 <ul>
                     <li v-for="item in menu" :key="item.id" style="padding-left: 2px">
 
@@ -23,7 +23,6 @@
                             {{ item.name}}
                         </a>
                         <small v-if="item.id==1" class="tag is-info is-light">{{countTicketAll}}</small>
-                        <small v-if="item.id==-1" class="tag is-info is-light">{{countTicketNoStatus}}</small>
                         <small class="tag is-info is-light" v-if="item.count_ticket!=0 && item.id>1">{{item.count_ticket}}</small>
                         <i v-if="selectMenu==item.id" style="color: #48c774" class=" fa fa-circle fa-fw"
                            aria-hidden="true"></i>
@@ -36,7 +35,7 @@
                 <div class="control">
                     <div class="tags has-addons">
                         <span class="tag is-dark">Все</span>
-                        <span class="tag is-info">Задачи</span>
+                        <span class="tag is-info">Исходящие</span>
                     </div>
                 </div>
             </div>
@@ -58,19 +57,12 @@
                 aria-previous-label="Previous page"
                 aria-page-label="Page"
                 aria-current-label="Current page">
-                <b-table-column field="id" label="N" width="40" sortable numeric v-slot="props">
+                <b-table-column field="id" label="№" width="40" sortable numeric v-slot="props">
                     {{ props.row.id }}
                 </b-table-column>
                 <b-table-column field="title" label="Наименование" sortable v-slot="props">
-                    <a :href="'/show?id=' + props.row.id">{{ props.row.title }}</a>
+                    {{ props.row.title }}
                 </b-table-column>
-
-                <b-table-column field="title" label="Исполнитель" sortable v-slot="props">
-                    <div v-for="user in props.row.performers" class="mb-2">
-                        <div>{{user.first_name}} {{user.last_name}}</div>
-                    </div>
-                </b-table-column>
-
                 <b-table-column field="date_start" label="Начало" sortable v-slot="props">
                     {{ props.row.date_start }}
                 </b-table-column>
@@ -112,19 +104,43 @@
                 total: 0,
                 selected: null,
                 data: [],
+                columns: [
+                    {
+                        field: 'id',
+                        label: 'ID',
+                        width: '40',
+                        numeric: true
+                    },
+                    {
+                        field: 'title',
+                        label: 'Название',
+                    },
+
+
+                    {
+                        field: 'status',
+                        label: 'Cтатус',
+                        centered: true
+                    },
+                    {
+                        field: 'actions',
+                        label: 'Действия',
+                        centered: true,
+                    },
+                ],
                 draggingRow: null,
                 draggingRowIndex: null,
                 menu: [],
                 soglText: [
-                    {id: 1, name: 'не согласован'},
-                    {id: 2, name: 'cогласован'},
+                    {id: 1, name: 'Не согласован'},
+                    {id: 2, name: 'Cогласован'},
                 ],
                 isplText: [
-                    {id: 1, name: 'выполнено'},
-                    {id: 2, name: 'в работе'},
-                    {id: 3, name: 'не готово'},
-                    {id: 4, name: 'тестирование'},
-                    {id: 5, name: 'пауза'},
+                    {id: 1, name: 'Выполнено'},
+                    {id: 2, name: 'В работе'},
+                    {id: 3, name: 'Не готово'},
+                    {id: 4, name: 'Тестирование'},
+                    {id: 5, name: 'Пауза'},
                 ],
                 zakazText: [
                     {id: 1, name: 'Оценка работы 1'},
@@ -133,8 +149,7 @@
                     {id: 4, name: 'Оценка работы 4'},
                     {id: 5, name: 'Оценка работы 5'},
                 ],
-                noStatus: 'без статуса',
-                countTicketNoStatus:null
+                noStatus: 'без статуса'
             }
         },
         methods: {
@@ -151,7 +166,6 @@
                     return this.noStatus;
                 }
                 return u.name;
-
             },
             isplTextSearch(d) {
                 var u = this.isplText.find(item => item.id == d)
@@ -169,9 +183,10 @@
                     `category=${this.selectMenu}`
                 ].join('&')
 
+
                 let todos = [];
                 let allTotal = 0
-                await axios.get(process.env.MIX_HTTP + window.location.hostname + '/all',
+                await axios.get(process.env.MIX_HTTP + window.location.hostname + '/outgoing/data',
                     {
                         params: {
                             data: params
@@ -194,24 +209,28 @@
             loadSubdivisionsName: async function () {
                 this.isLoading = true;
 
-                try {
-                    const resp = await axios.get(process.env.MIX_HTTP + window.location.hostname + '/getListSubdivisionsName');
-                    this.menu.push({'id': 1, 'name': 'Все подразделения'})
-                    resp.data.menus.forEach((value, index) => {
-                        this.menu.push(value);
+                let todos = [];
+
+                await axios.get(process.env.MIX_HTTP + window.location.hostname + '/getListSubdivisionsNameCountAuthWork')
+                    .then(
+                        (response) => todos = [...response.data],
+                    )
+                    .catch(error => console.log(error))
+                this.menu = []
+                this.menu.push({'id': 1, 'name': 'Все подразделения'})
+
+                todos.forEach((value, index) => {
+                    this.menu.push(value);
+                    if(value.count_ticket>0){
                         this.countTicketAll = value.count_ticket + this.countTicketAll;
-                    });
-                    this.countTicketNoStatus = resp.data.noStatusTicket;
-                    //this.menu.push({'id': -1, 'name': 'Без статусов'})
-                } catch (err) {
-                    console.error(err);
-                }
+                    }
+                });
                 this.isLoading = false;
-                this.loadSubdivisionsNameCount();
+                //this.loadSubdivisionsNameCount();
             },
             loadSubdivisionsNameCount: async function () {
                 let todo = [];
-                await axios.get(process.env.MIX_HTTP + window.location.hostname + '/getListSubdivisionsName')
+                await axios.get(process.env.MIX_HTTP + window.location.hostname + '/getListSubdivisionsNameCount')
                     .then(
                         (response) => todo = [...response.data],
                     )

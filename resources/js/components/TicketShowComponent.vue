@@ -167,7 +167,7 @@
                     <div v-if="editIspl">
                         <div class="select is-small mr-1" style="float: left">
                             <select v-model="statusIspl">
-                                <option value="1">сделано</option>
+                                <option value="1">выполнено</option>
                                 <option value="2">в работе</option>
                                 <option value="3">не готово</option>
                                 <option value="4">тестирование</option>
