@@ -73,9 +73,6 @@ foreach($recon as $item){
                 </div>
 
                 <a class="navbar-item" href="/store">
-                    <span class="icon is-left mr-1">
-                       <i class="fas fa-book" aria-hidden="true"></i>
-                    </span>
                     Создать
                 </a>
                 <a class="navbar-item" href="/approval">
