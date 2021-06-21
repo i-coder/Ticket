@@ -1101,7 +1101,7 @@ class TicketController extends Controller
 //            $sort['date_start'][$k] = $v['date_start'];
 //        }
 //        array_multisort($sort['status'], SORT_ASC, $sort['date_start'], SORT_ASC, $ticketsInfo);
-dump($ticketsInfo);
+
         return json_encode($ticketsInfo);
     }
 
