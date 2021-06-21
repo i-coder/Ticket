@@ -71,9 +71,7 @@ foreach($recon as $item){
                         </a>
                     </div>
                 </div>
-                <div class="navbar-item">
-                    <input class="input is-success" type="text" placeholder="Поиск.."/>
-                </div>
+
                 <a class="navbar-item" href="/store">
                     <span class="icon is-left mr-1">
                        <i class="fas fa-book" aria-hidden="true"></i>
