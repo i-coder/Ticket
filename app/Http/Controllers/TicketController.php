@@ -605,8 +605,9 @@ class TicketController extends Controller
 
 
         $customer = SubdivisionName::find($ticket->customer);
+
 //dd(['zakaz' => $arrZakazStatus, 'procentispl'=>$arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => User::find($ticket->id_user), 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
-        return view('ticket.show', ['zakaz' => $arrZakazStatus, 'procentispl' => $arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => User::find($ticket->id_user), 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
+        return view('ticket.show', ['zakaz' => $arrZakazStatus, 'procentispl' => $arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => User::where('id', '=', $ticket->id_user)->first(), 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
     }
 
     public function realStatusTicket(Request $request)
@@ -1322,13 +1323,18 @@ class TicketController extends Controller
         $id = (int)$request->id;
 
         if ((int)$soglStatus != "null") {
-            $newStatusSogl = [
-                'user_id' => Auth::id(),
-                'roll' => TicketStatus::SOGL,
-                'status' => $soglStatus,
-                'ticket_id' => $id,
-            ];
-            TicketStatus::create($newStatusSogl);
+            $find = TicketStatus::where('roll', '=', TicketStatus::SOGL)
+                ->where('ticket_id', '=', $id)->first();
+
+            if (!$find) {
+                $newStatusSogl = [
+                    'user_id' => Auth::id(),
+                    'roll' => TicketStatus::SOGL,
+                    'status' => $soglStatus,
+                    'ticket_id' => $id,
+                ];
+                TicketStatus::create($newStatusSogl);
+            }
         }
 
     }
@@ -1338,15 +1344,18 @@ class TicketController extends Controller
     {
         $soglStatus = (int)$request->zakaz;
         $id = (int)$request->id;
-
-        if ((int)$soglStatus != "null") {
-            $newStatusZakaz = [
-                'user_id' => Auth::id(),
-                'roll' => TicketStatus::ZAKA,
-                'status' => $soglStatus,
-                'ticket_id' => $id,
-            ];
-            TicketStatus::create($newStatusZakaz);
+        $find = TicketStatus::where('roll', '=', TicketStatus::ZAKA)
+            ->where('ticket_id', '=', $id)->first();
+        if (!$find) {
+            if ((int)$soglStatus != "null") {
+                $newStatusZakaz = [
+                    'user_id' => Auth::id(),
+                    'roll' => TicketStatus::ZAKA,
+                    'status' => $soglStatus,
+                    'ticket_id' => $id,
+                ];
+                TicketStatus::create($newStatusZakaz);
+            }
         }
 
     }

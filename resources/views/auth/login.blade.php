@@ -9,7 +9,7 @@
                     <form method="POST" action="{{ route('login') }}" class="box">
                         <img src="{{ asset('images/logo.svg') }}" width="200px" class="bg-white">
                         @csrf
-                        <h1>Авторизация в системе</h1>
+                        <h1>Авторизация в системе СЭД</h1>
                         <div class="field">
                             <label for="email" class="label">Email</label>
                             <div class="">
