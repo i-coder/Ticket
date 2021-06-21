@@ -46,6 +46,7 @@ class TicketController extends Controller
         1 => 'Согласование',
         2 => 'Задача',
         3 => 'Служебка',
+        4 => 'Автоматизация',
     ];
 
     protected $fileUploadPath = 'uploads/ticket_attached_files/';
@@ -206,14 +207,14 @@ class TicketController extends Controller
         ];
 
         $existingTicket->update($ticketData);
-
-        try {
-            $request->validate([
-                'file.*' => 'mimes:jpeg,png,txt,pdf,xls,jpg,bmp,gif,doc,docx,pdf',
-            ]);
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Неправильный формат загруженного файла');
-        }
+        /*
+                try {
+                    $request->validate([
+                        'file.*' => 'mimes:jpeg,png,txt,pdf,xls,jpg,bmp,gif,doc,docx,pdf',
+                    ]);
+                } catch (\Exception $e) {
+                    return redirect()->back()->with('error', 'Неправильный формат загруженного файла');
+                }*/
 
         if (isset($uploadedFiles['files'])) {
             foreach ($uploadedFiles['files'] as $uploadedFile) {
@@ -353,7 +354,7 @@ class TicketController extends Controller
         }
 
         $realName = User::find(Auth::id());
-        return json_encode(['id' => $newIdComment->id, 'comment' => $request->comment, 'date' => $newIdComment->created_at, 'files' => json_encode($files), 'users' => $realName->f.' '.$realName->i.' '.$realName->o ]);
+        return json_encode(['id' => $newIdComment->id, 'comment' => $request->comment, 'date' => $newIdComment->created_at, 'files' => json_encode($files), 'users' => $realName->f . ' ' . $realName->i . ' ' . $realName->o]);
 
     }
 
@@ -509,7 +510,7 @@ class TicketController extends Controller
                         $toArray[] = $item->file;
                     }
                 }
-                $fio = User::where('id','=',$comment->user_id)->first();
+                $fio = User::where('id', '=', $comment->user_id)->first();
                 $comments_data[] = (object)[
                     'id' => $comment->id,
                     'ticket_id' => $comment->ticket_id,
@@ -605,7 +606,7 @@ class TicketController extends Controller
 
         $customer = SubdivisionName::find($ticket->customer);
 //dd(['zakaz' => $arrZakazStatus, 'procentispl'=>$arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => User::find($ticket->id_user), 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
-        return view('ticket.show', ['zakaz' => $arrZakazStatus, 'procentispl'=>$arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => User::find($ticket->id_user), 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
+        return view('ticket.show', ['zakaz' => $arrZakazStatus, 'procentispl' => $arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => User::find($ticket->id_user), 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
     }
 
     public function realStatusTicket(Request $request)
@@ -635,7 +636,7 @@ class TicketController extends Controller
         $id = (int)$request->id;
 
         if ((int)$isplProcent != "null") {
-            $max = TicketProcent::where('ticket_id','=',$id)->max('procent');
+            $max = TicketProcent::where('ticket_id', '=', $id)->max('procent');
 
             if ($max < $isplProcent) {
                 $newStatusSogl = [
@@ -1388,7 +1389,7 @@ class TicketController extends Controller
         $all = [];
 
         foreach ($user->performers as $item) {
-            $ticket = Ticket::where('id','=',$item['ticket_id'])->first()->toArray();
+            $ticket = Ticket::where('id', '=', $item['ticket_id'])->first()->toArray();
 
             $tekStatusIspl = DB::table('ticket_status')
                 ->where('ticket_id', '=', $item['ticket_id'])
@@ -1413,7 +1414,7 @@ class TicketController extends Controller
         $all = [];
 
         foreach ($user->reconciliations as $item) {
-            $ticket = Ticket::where('id','=',$item['ticket_id'])->first()->toArray();
+            $ticket = Ticket::where('id', '=', $item['ticket_id'])->first()->toArray();
             $tekStatusIspl = DB::table('ticket_status')
                 ->where('ticket_id', '=', $item['ticket_id'])
                 ->orderBy('created_at', 'desc')
@@ -1428,7 +1429,8 @@ class TicketController extends Controller
     /**
      * Исходящие
      */
-    public function actionGetOutgoing(){
+    public function actionGetOutgoing()
+    {
         return view('outgoing.index');
     }
 

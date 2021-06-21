@@ -77,6 +77,9 @@
                 <b-table-column field="date_start" label="Конец" sortable v-slot="props">
                     {{ props.row.date_end }}
                 </b-table-column>
+                <b-table-column field="date_start" label="Тип" sortable v-slot="props">
+                    <span class="tag is-light">{{ props.row.type_task }}</span>
+                </b-table-column>
                 <b-table-column field="work_status" label="Раб статус" width="150" sortable v-slot="props">
                     <span class="tag is-success" v-if="props.row.work_status==1"> {{ isplTextSearch(props.row.work_status) }}</span>
                     <span class="tag is-warning" v-if="props.row.work_status==2"> {{ isplTextSearch(props.row.work_status) }}</span>
