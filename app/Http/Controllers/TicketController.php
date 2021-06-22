@@ -642,18 +642,27 @@ class TicketController extends Controller
         if ((int)$isplProcent != "null") {
             $max = TicketProcent::where('ticket_id', '=', $id)->max('id');
             $maxPr = TicketProcent::where('id', '=', $max)->first();
+            if ($maxPr != null) {
+                if ($maxPr['procent'] < $isplProcent) {
+                    if ($maxPr['procent'] != $isplProcent) {
+                        $newStatusSogl = [
+                            'user_id' => Auth::id(),
+                            'procent' => $isplProcent,
+                            'ticket_id' => $id,
+                        ];
+                        TicketProcent::create($newStatusSogl);
+                    }
 
-            if ($maxPr['procent'] < $isplProcent) {
-                if($maxPr['procent'] != $isplProcent){
-                    $newStatusSogl = [
-                        'user_id' => Auth::id(),
-                        'procent' => $isplProcent,
-                        'ticket_id' => $id,
-                    ];
-                    TicketProcent::create($newStatusSogl);
                 }
-
+            } else {
+                $newStatusSogl = [
+                    'user_id' => Auth::id(),
+                    'procent' => $isplProcent,
+                    'ticket_id' => $id,
+                ];
+                TicketProcent::create($newStatusSogl);
             }
+
 
         }
     }
@@ -704,11 +713,10 @@ class TicketController extends Controller
                 ->first();
 
 
-
             if ($tekStatusIspl != null and $tekStatusSogl != null) {
-                if($tekStatusIspl->status==1 AND $tekStatusSogl->status==2){
+                if ($tekStatusIspl->status == 1 and $tekStatusSogl->status == 2) {
 
-                }else{
+                } else {
                     array_push(
                         $ticketsInfo,
                         [
@@ -720,13 +728,13 @@ class TicketController extends Controller
                             'date_end' => $date_end,
                             'performers' => $performers,
                             'actions' => $actions,
-                            'work_status' => ($tekStatusIspl)?(int)$tekStatusIspl->status:null,
-                            'sogl_status' => ($tekStatusSogl)?(int)$tekStatusSogl->status:null,
-                            'procent' => ($tekStatusProcent)?$tekStatusProcent->procent:0,
+                            'work_status' => ($tekStatusIspl) ? (int)$tekStatusIspl->status : null,
+                            'sogl_status' => ($tekStatusSogl) ? (int)$tekStatusSogl->status : null,
+                            'procent' => ($tekStatusProcent) ? $tekStatusProcent->procent : 0,
                         ]
                     );
                 }
-            }else{
+            } else {
                 array_push(
                     $ticketsInfo,
                     [
@@ -738,13 +746,12 @@ class TicketController extends Controller
                         'date_end' => $date_end,
                         'performers' => $performers,
                         'actions' => $actions,
-                        'work_status' => ($tekStatusIspl)?(int)$tekStatusIspl->status:null,
-                        'sogl_status' => ($tekStatusSogl)?(int)$tekStatusSogl->status:null,
-                        'procent' => ($tekStatusProcent)?$tekStatusProcent->procent:0,
+                        'work_status' => ($tekStatusIspl) ? (int)$tekStatusIspl->status : null,
+                        'sogl_status' => ($tekStatusSogl) ? (int)$tekStatusSogl->status : null,
+                        'procent' => ($tekStatusProcent) ? $tekStatusProcent->procent : 0,
                     ]
                 );
             }
-
 
 
             //обнуляем
@@ -814,7 +821,7 @@ class TicketController extends Controller
 
 
             if ($tekStatusIspl != null and $tekStatusSogl != null) {
-                if($tekStatusIspl->status==1 AND $tekStatusSogl->status==2){
+                if ($tekStatusIspl->status == 1 and $tekStatusSogl->status == 2) {
                     array_push(
                         $ticketsInfo,
                         [
@@ -826,8 +833,8 @@ class TicketController extends Controller
                             'date_end' => $date_end,
                             'performers' => $performers,
                             'actions' => $actions,
-                            'work_status' => ($tekStatusIspl)?(int)$tekStatusIspl->status:null,
-                            'sogl_status' => ($tekStatusSogl)?(int)$tekStatusSogl->status:null,
+                            'work_status' => ($tekStatusIspl) ? (int)$tekStatusIspl->status : null,
+                            'sogl_status' => ($tekStatusSogl) ? (int)$tekStatusSogl->status : null,
                         ]
                     );
                 }

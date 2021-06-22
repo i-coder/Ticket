@@ -468,7 +468,7 @@
                 editSogl: false,
                 editZakaz:false,
 
-                selectProcentIspl:null,
+                selectProcentIspl:this.ticket.tekProcentIspl,
                 statusProcent: this.ticket.tekProcentIspl,
                 statusIspl: this.ticket.tekStatusIspl,
                 statusSogl: this.ticket.tekStatusSogl,
