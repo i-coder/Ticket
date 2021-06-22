@@ -41,7 +41,7 @@ foreach($recon as $item){
 
 <style>
     body{
-        font-size: 12px !important;
+        font-size: 13px !important;
     }
 </style>
 </head>
