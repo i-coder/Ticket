@@ -92,7 +92,7 @@
                         {{ props.row.id }}
                     </b-table-column>
                     <b-table-column field="title" label="Наименование" sortable v-slot="props">
-                        {{ props.row.title }}
+                        <a :href="'/show?id=' + props.row.id">{{ props.row.title }}</a>
                     </b-table-column>
                     <b-table-column field="date_start" label="Начало" sortable v-slot="props">
                         {{ props.row.date_start }}
