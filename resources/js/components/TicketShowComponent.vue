@@ -35,8 +35,7 @@
                         <b-field class="mb-0" label="Задача создана">
                         </b-field>
                         <div>
-                            <span class="tag">{{user.f}} {{user.i}} {{user.o}}</span>
-                            <span class="tag">{{user.created_at}}</span>
+                            <span class="tag">{{user.f}} {{user.i}} {{user.o}}</span>{{user.created_at}}
                         </div>
 
                     </div>
