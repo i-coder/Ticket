@@ -642,7 +642,7 @@ class TicketController extends Controller
         if ((int)$isplProcent != "null") {
             $max = TicketProcent::where('ticket_id', '=', $id)->max('procent');
 
-            if ($max < $isplProcent) {
+            if ($max < $isplProcent AND $max != $isplProcent) {
                 $newStatusSogl = [
                     'user_id' => Auth::id(),
                     'procent' => $isplProcent,
