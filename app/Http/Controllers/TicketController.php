@@ -694,26 +694,140 @@ class TicketController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->first();
 
-            foreach ($performers as $performer) {
-                array_push($performersInfo, [' ' . $performer->first_name . ' ' . $performer->last_name]);
+            $tekStatusProcent = DB::table('table_procent_ticket')
+                ->where('ticket_id', '=', $ticket->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+
+
+            if ($tekStatusIspl != null and $tekStatusSogl != null) {
+                if($tekStatusIspl->status==1 AND $tekStatusSogl->status==2){
+
+                }else{
+                    array_push(
+                        $ticketsInfo,
+                        [
+                            'id' => $ticket->id,
+                            'title' => $ticket->title,
+                            'priority' => $priority,
+                            'type_task' => $type_task,
+                            'date_start' => $date_start,
+                            'date_end' => $date_end,
+                            'performers' => $performers,
+                            'actions' => $actions,
+                            'work_status' => ($tekStatusIspl)?(int)$tekStatusIspl->status:null,
+                            'sogl_status' => ($tekStatusSogl)?(int)$tekStatusSogl->status:null,
+                            'procent' => ($tekStatusProcent)?$tekStatusProcent->procent:0,
+                        ]
+                    );
+                }
+            }else{
+                array_push(
+                    $ticketsInfo,
+                    [
+                        'id' => $ticket->id,
+                        'title' => $ticket->title,
+                        'priority' => $priority,
+                        'type_task' => $type_task,
+                        'date_start' => $date_start,
+                        'date_end' => $date_end,
+                        'performers' => $performers,
+                        'actions' => $actions,
+                        'work_status' => ($tekStatusIspl)?(int)$tekStatusIspl->status:null,
+                        'sogl_status' => ($tekStatusSogl)?(int)$tekStatusSogl->status:null,
+                        'procent' => ($tekStatusProcent)?$tekStatusProcent->procent:0,
+                    ]
+                );
             }
 
-            array_push(
-                $ticketsInfo,
-                [
-                    'id' => $ticket->id,
-                    'title' => $ticket->title,
-                    'priority' => $priority,
-                    'type_task' => $type_task,
-                    'date_start' => $date_start,
-                    'date_end' => $date_end,
-                    'performers' => $performers,
-                    'actions' => $actions,
-                    'work_status' => ($tekStatusIspl) ? (int)$tekStatusIspl->status : null,
-                    'sogl_status' => ($tekStatusSogl) ? (int)$tekStatusSogl->status : null,
-                ]
-            );
 
+
+            //обнуляем
+            $performersInfo = [];
+        }
+
+
+        if (count($ticketsInfo) == 0) {
+            return [];
+        }
+//
+//        $sort = array();
+//        foreach ($ticketsInfo as $k => $v) {
+//            $sort['status'][$k] = $v['status'];
+//            $sort['date_start'][$k] = $v['date_start'];
+//        }
+//        array_multisort($sort['status'], SORT_ASC, $sort['date_start'], SORT_ASC, $ticketsInfo);
+
+        return json_encode($ticketsInfo);
+    }
+
+    /**
+     * Задачи которые согласованные и выполнены
+     * @param Request $request
+     * @return array|false|string
+     */
+
+    public
+    function allArchive(Request $request)
+    {
+
+        $findProperty = explode("&", $request->data);
+        $findCategory = explode("=", $findProperty[3]);
+
+        $ticketsInfo = [];
+        $performersInfo = [];
+
+        if ($findCategory[1] > 1) {
+            $tickets = Ticket::where('customer', '=', $findCategory[1])->get();
+        } else {
+            $tickets = Ticket::all();
+        }
+
+
+        foreach ($tickets as $ticket) {
+
+            $priority = $this->priorities[$ticket->priority] ?? '';
+            $type_task = $this->tasks[$ticket->type_task] ?? '';
+            $performers = $ticket->performer->all();
+            setlocale(LC_TIME, 'ru_RU.UTF-8');
+            $date_start = strftime('%d.%m.%y', strtotime($ticket->date_start));
+            $date_end = strftime('%d.%m.%y', strtotime($ticket->date_end));
+            $actions = '<a href="/show?id=' . $ticket->id . '"> Открыть </a>';
+            // $status = self::STATUSES[$ticket->status];
+
+            $tekStatusSogl = DB::table('ticket_status')
+                ->where('ticket_id', '=', $ticket->id)
+                ->where('roll', TicketStatus::SOGL)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            $tekStatusIspl = DB::table('ticket_status')
+                ->where('ticket_id', '=', $ticket->id)
+                ->where('roll', TicketStatus::ISPL)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+
+            if ($tekStatusIspl != null and $tekStatusSogl != null) {
+                if($tekStatusIspl->status==1 AND $tekStatusSogl->status==2){
+                    array_push(
+                        $ticketsInfo,
+                        [
+                            'id' => $ticket->id,
+                            'title' => $ticket->title,
+                            'priority' => $priority,
+                            'type_task' => $type_task,
+                            'date_start' => $date_start,
+                            'date_end' => $date_end,
+                            'performers' => $performers,
+                            'actions' => $actions,
+                            'work_status' => ($tekStatusIspl)?(int)$tekStatusIspl->status:null,
+                            'sogl_status' => ($tekStatusSogl)?(int)$tekStatusSogl->status:null,
+                        ]
+                    );
+                }
+            }
             //обнуляем
             $performersInfo = [];
         }
@@ -1010,14 +1124,12 @@ class TicketController extends Controller
                     $tekStatusSogl = DB::table('ticket_status')
                         ->where('ticket_id', '=', $ticket->id)
                         ->where('roll', TicketStatus::SOGL)
-                        ->where('user_id', Auth::id())
                         ->orderBy('created_at', 'desc')
                         ->first();
 
                     $tekStatusIspl = DB::table('ticket_status')
                         ->where('ticket_id', '=', $ticket->id)
                         ->where('roll', TicketStatus::ISPL)
-                        ->where('user_id', Auth::id())
                         ->orderBy('created_at', 'desc')
                         ->first();
 
@@ -1139,14 +1251,12 @@ class TicketController extends Controller
                     $tekStatusSogl = DB::table('ticket_status')
                         ->where('ticket_id', '=', $ticket->id)
                         ->where('roll', TicketStatus::SOGL)
-                        ->where('user_id', Auth::id())
                         ->orderBy('created_at', 'desc')
                         ->first();
 
                     $tekStatusIspl = DB::table('ticket_status')
                         ->where('ticket_id', '=', $ticket->id)
                         ->where('roll', TicketStatus::ISPL)
-                        ->where('user_id', Auth::id())
                         ->orderBy('created_at', 'desc')
                         ->first();
 

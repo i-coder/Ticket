@@ -80,13 +80,6 @@
                 <b-table-column field="date_start" label="Тип" sortable v-slot="props">
                     <span class="tag is-light">{{ props.row.type_task }}</span>
                 </b-table-column>
-                <b-table-column field="date_start" label="Выполнено" sortable v-slot="props" width="100px" style="color: #eeeeee">
-                    <span class="" v-if="props.row.procent>=5 ||  " style="background-color: darkgreen;padding-left: 15px">{{ props.row.procent }}%</span>
-                    <span class="" v-if="props.row.procent<=30" style="background-color: darkgreen;padding-left: 30px">{{ props.row.procent }}%</span>
-                    <span class="" v-if="props.row.procent<=50" style="background-color: darkgreen;padding-left: 50px">{{ props.row.procent }}%</span>
-                    <span class="" v-if="props.row.procent<=60" style="background-color: darkgreen;padding-left: 60px">{{ props.row.procent }}%</span>
-                    <span class="" v-if="props.row.procent<=70" style="background-color: darkgreen;padding-left: 70px">{{ props.row.procent }}%</span>
-                </b-table-column>
                 <b-table-column field="work_status" label="Раб статус" width="150" sortable v-slot="props">
                     <span class="tag is-success" v-if="props.row.work_status==1"> {{ isplTextSearch(props.row.work_status) }}</span>
                     <span class="tag is-warning" v-if="props.row.work_status==2"> {{ isplTextSearch(props.row.work_status) }}</span>
