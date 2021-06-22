@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Performer extends Model
 {
@@ -15,6 +16,6 @@ class Performer extends Model
     }
     public function getStatus()
     {
-        return $this->hasMany('App\TicketStatus','ticket_id', 'ticket_id');
+        return $this->hasMany('App\TicketStatus','ticket_id', 'ticket_id')->where('user_id','=',Auth::id());
     }
 }

@@ -46,8 +46,11 @@
                         {{ props.row.date_end }}
                     </b-table-column>
                     <b-table-column field="work_status" label="Раб статус" width="150" sortable v-slot="props">
+
                         <span class="tag is-success" v-if="props.row.work_status==1"> {{ isplTextSearch(props.row.work_status) }}</span>
+
                         <span class="tag is-warning" v-if="props.row.work_status==2"> {{ isplTextSearch(props.row.work_status) }}</span>
+
                         <span class="tag is-danger" v-if="props.row.work_status>2 || props.row.work_status==null"> {{ isplTextSearch(props.row.work_status) }}</span>
                     </b-table-column>
 

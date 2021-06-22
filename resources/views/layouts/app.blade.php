@@ -2,26 +2,28 @@
 
 use App\Performer;
 use App\Reconciliation;
+use Illuminate\Support\Facades\Auth;
 
-$recon = Reconciliation::where('subdivision_id','=',Auth::id())->get();
-$iSogl=0;
-foreach($recon as $item){
-    if(count($item->getStatus)==0){
-        $iSogl++;
+$recon = Reconciliation::where('subdivision_id', '=', Auth::id())->get();
+$iSogl = 0;
+foreach ($recon as $item) {
+    if (count($item->getStatus) == 0) {
+        $iSogl = $iSogl+1;
     }
 }
 
-$recon = Performer::where('user_id','=',Auth::id())->get();
-$iIspl=0;
-foreach($recon as $item){
-    if(count($item->getStatus)==0){
-        $iIspl++;
+$recon = Performer::where('user_id', '=', Auth::id())->get();//исполнитель
+$iIspl = 0;
+
+foreach ($recon as $item) {
+    if (count($item->getStatus) == 0) {
+        $iIspl = $iIspl + 1;
     }
 }
 
 ?>
 
-<!doctype html>
+    <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -39,11 +41,11 @@ foreach($recon as $item){
     <link href="{{ asset('css/materialdesignicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/all.css') }}" rel="stylesheet">
 
-<style>
-    body{
-        font-size: 13px !important;
-    }
-</style>
+    <style>
+        body {
+            font-size: 13px !important;
+        }
+    </style>
 </head>
 <body>
 <div id="app" class="">
