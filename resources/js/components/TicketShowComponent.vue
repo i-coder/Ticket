@@ -194,7 +194,7 @@
 
                     <div v-if="editIspl">
                         <div class="select is-small mr-1" style="float: left">
-                            <select v-model="statusProcent">
+                            <select v-model="selectProcentIspl">
                                 <option value="5">5</option>
                                 <option value="10">10</option>
                                 <option value="15">15</option>
@@ -468,6 +468,7 @@
                 editSogl: false,
                 editZakaz:false,
 
+                selectProcentIspl:null,
                 statusProcent: this.ticket.tekProcentIspl,
                 statusIspl: this.ticket.tekStatusIspl,
                 statusSogl: this.ticket.tekStatusSogl,
@@ -668,7 +669,7 @@
             addProcentIspl: async function () {
                 this.isLoading = true;
 
-                this.form.append('procent', this.statusProcent)
+                this.form.append('procent', this.selectProcentIspl)
                 this.form.append('id', this.id)
 
                 let response = await axios.post(process.env.MIX_HTTP + window.location.hostname + '/add/procent/ispl',
