@@ -490,7 +490,7 @@
                 dates: [this.ticket.date_start, this.ticket.date_end],
                 task: this.ticket.type_task,
                 priority: this.ticket.priority,
-                status: this.ticket.status,
+                status: this.ticket.type_task,
                 dropFiles: [],
                 existingFiles: this.files,
                 checkboxGroup: this.reconciliations,
