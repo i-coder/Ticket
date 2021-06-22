@@ -36,9 +36,9 @@
                     {{ props.row.id }}
                 </b-table-column>
                 <b-table-column field="title" label="Ф.И.О" sortable v-slot="props">
-                    {{ props.row.f }}
+                    <a :href="'/all/people/show?id=' + props.row.id" class="btn btn-light">{{ props.row.f }}
                     {{ props.row.i }}
-                    {{ props.row.o }}
+                        {{ props.row.o }}</a>
                 </b-table-column>
                 <b-table-column field="count_ticket" label="На исполнение" sortable v-slot="props">
                     {{ props.row.performers.length }}
