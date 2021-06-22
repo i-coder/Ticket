@@ -606,8 +606,11 @@ class TicketController extends Controller
 
         $customer = SubdivisionName::find($ticket->customer);
 
+        $mUser = User::where('id', '=', $ticket->id_user)->first();
+        $mUser['dates'] = \Carbon\Carbon::parse($mUser['created_at'])->format('d.m.Y H:i:s');
+
 //dd(['zakaz' => $arrZakazStatus, 'procentispl'=>$arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => User::find($ticket->id_user), 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
-        return view('ticket.show', ['zakaz' => $arrZakazStatus, 'procentispl' => $arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => User::where('id', '=', $ticket->id_user)->first(), 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
+        return view('ticket.show', ['zakaz' => $arrZakazStatus, 'procentispl' => $arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => $mUser, 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
     }
 
     public function realStatusTicket(Request $request)
