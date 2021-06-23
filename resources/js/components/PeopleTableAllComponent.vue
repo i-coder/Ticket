@@ -51,7 +51,7 @@
                               {{props.row.id}}
                             </span>
                             <span v-if="props.column.field == 'f'">
-                              <a :href="'/show?id=' + props.row.id">{{props.row.f}}</a>
+                              <a :href="'/all/people/show?id=' + props.row.id">{{props.row.f}}</a>
                             </span>
                             <span v-if="props.column.field == 'i'">
                               {{props.row.i}}
