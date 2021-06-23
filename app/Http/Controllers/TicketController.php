@@ -120,10 +120,10 @@ class TicketController extends Controller
 
                 array_push($files, $fileName);
 
-                $newFile = File::create(['file' => serialize($files)]);
-
-                $isTicketSaved = $newTicket->file()->save($newFile);
             }
+            $newFile = File::create(['file' => json_encode($files)]);
+
+            $isTicketSaved = $newTicket->file()->save($newFile);
         }
 
 
@@ -487,6 +487,7 @@ class TicketController extends Controller
         $reconciliations = $ticket->reconciliation ? $ticket->reconciliation->all() : [];//согласующие
 
         $files = $ticket->file ? $ticket->file->all() : [];
+        // dd($files);
         $performers_data = [];
         $comments_data = [];
         $reconciliations_data = [];
@@ -541,15 +542,19 @@ class TicketController extends Controller
 
         if (!empty($files)) {
             foreach ($files as $file) {
-                $fileName = current(unserialize($file->file));
+                $fileName = json_decode($file->file);
 
-                $fileLinks[] = [
-                    'id' => $file->id,
-                    'path' => '/uploads/ticket_attached_files/' . $ticket->id . '/' . $fileName,
-                    'name' => $fileName
-                ];
+                foreach ($fileName as  $key=>$value) {
+                    $fileLinks[] = [
+                        'id' => $file->id,
+                        'path' => '/uploads/ticket_attached_files/' . $file->ticket_id . '/' . $value,
+                        'name' => $value
+                    ];
+                }
+
             }
         }
+
 
         $tekStatusSogl = DB::table('ticket_status')
             ->where('ticket_id', '=', $request->id)
@@ -1561,6 +1566,7 @@ class TicketController extends Controller
     {
         return view('outgoing.index');
     }
+
     /**
      * архиф задач
      */

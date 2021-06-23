@@ -87,7 +87,7 @@
                                 <span>{{item.comment}}</span>
                                 <br>
                                 <span v-for="item2 in item.files" :key="item2.id">
-                                    <span><a v-bind:href="'/uploads/ticket_attached_files/'+id+'/'+item2">{{item2}}</a> </span>
+                                    <span><a v-bind:href="'/uploads/ticket_attached_files/'+id+'/'+item2">{{item2}}</a> </span><br>
                                 </span>
                         </p>
                     </div>
