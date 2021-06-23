@@ -28,6 +28,7 @@ Vue.use(CKEditor);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('ticket-created-component', require('./components/TicketCreatedComponent.vue').default);
 Vue.component('ticket-table-all-component', require('./components/TicketTableAllComponent.vue').default);
+Vue.component('ticket-table-all-archive-component', require('./components/TicketTableAllArchiveComponent.vue').default);
 Vue.component('ticket-table-outgoing-component', require('./components/TicketTableOutgoingComponent.vue').default);
 Vue.component('people-table-all-component', require('./components/PeopleTableAllComponent.vue').default);
 Vue.component('people-table-all-ticket-component', require('./components/PeopleTableAllTicketComponent.vue').default);

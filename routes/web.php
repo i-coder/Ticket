@@ -21,6 +21,8 @@ Route::group(['middleware' => ['auth', 'cors']], function () {
     Route::get('/store', 'HomeController@store')->name('store');
     Route::get('tag/{id}', 'TicketController@tag')->name('tag');
     Route::get('all', 'TicketController@all')->name('all');
+    Route::get('allArchive', 'TicketController@allArchive')->name('allArchive');
+    Route::get('ViewAllArchive', 'TicketController@actionArchive')->name('actionArchive');
 
     Route::get('getListSubdivisionsName', 'TicketController@getListSubdivisionsName')->name('getListSubdivisionsName');
     Route::get('getListSubdivisionsNameCount', 'TicketController@getListSubdivisionsNameCount')->name('getListSubdivisionsNameCount');

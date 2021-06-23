@@ -97,18 +97,12 @@
                         <b-field label="Комментарии">
                         </b-field>
                         <textarea class="textarea mb-1" rows="3" v-model="comment"
-                                  placeholder="Добавить комментарий..."></textarea>
+                                  placeholder="Текст сообщения..."></textarea>
+                        <b-button type="is-success is-small rounded" @click="addComment" style="float: left;margin-right: 20px">добавить комментарий
+                        </b-button>
 
-                        <b-field class="file">
-                            <b-upload v-model="dropFiles" multiple class="file-label">
-                            <span class="file-cta">
 
-                                <span class="file-label">Прикрепить файлы</span>
-                            </span>
-                            </b-upload>
-                        </b-field>
-
-                        <div class="tags">
+                        <div class="tags mt-1">
                         <span v-for="(file, index) in dropFiles"
                               :key="index"
                               class="tag is-primary">
@@ -121,9 +115,21 @@
                         </div>
 
 
-                        <b-button type="is-success is-small rounded" @click="addComment">Добавить
-                        </b-button>
 
+
+                    </div>
+                    <div class="column is-3 is-narrow">
+                        <b-field label="Прикрепить файлы">
+                        </b-field>
+                        <b-field class="file">
+                                <b-upload v-model="dropFiles" multiple drag-drop expanded style="height: 95px;">
+                                        <div class="content has-text-centered" style="padding-top: 15px;">
+                                            <p>
+                                                <b-icon icon="upload" size="is-large"></b-icon>
+                                            </p>
+                                        </div>
+                                </b-upload>
+                        </b-field>
                     </div>
                 </div>
             </div>
@@ -718,7 +724,14 @@
 
             },
             addComment: async function () {
+
+                if(!this.comment){
+                    this.warning()
+                    return
+                }
+
                 this.isLoading = true;
+
 
                 this.form.append('comment', this.comment)
                 this.dropFiles.forEach((item, index) => {

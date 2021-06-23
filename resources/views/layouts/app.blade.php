@@ -72,7 +72,7 @@ foreach ($recon as $item) {
                         Список
                     </a>
                     <div class="navbar-dropdown is-boxed">
-                        <a class="navbar-item" href="">
+                        <a class="navbar-item" href="/ViewAllArchive">
                             Архив задач
                         </a>
                     </div>
