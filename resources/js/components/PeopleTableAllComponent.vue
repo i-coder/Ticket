@@ -14,6 +14,7 @@
                     </div>
                 </div>
             </div>
+
             <b-table
                 paginated
                 backend-pagination
@@ -23,7 +24,6 @@
                 :data="data"
                 :sort-icon="sortIcon"
                 :sort-icon-size="sortIconSize"
-
                 :pagination-rounded="true"
                 :selected.sync="selected"
                 :default-sort-direction="defaultSortOrder"
@@ -32,24 +32,43 @@
                 aria-previous-label="Previous page"
                 aria-page-label="Page"
                 aria-current-label="Current page">
-                <b-table-column field="id" label="N" width="40" sortable numeric v-slot="props">
-                    {{ props.row.id }}
-                </b-table-column>
-                <b-table-column field="title" label="Ф.И.О" sortable v-slot="props">
-                    <a :href="'/all/people/show?id=' + props.row.id" class="btn btn-light">{{ props.row.f }}
-                    {{ props.row.i }}
-                        {{ props.row.o }}</a>
-                </b-table-column>
-                <b-table-column field="count_ticket" label="На исполнение" sortable v-slot="props">
-                    {{ props.row.performers.length }}
-                </b-table-column>
-                <b-table-column field="count_ticket" label="На согласование" sortable v-slot="props">
-                    {{ props.row.reconciliations.length }}
-                </b-table-column>
+                <template v-for="column in columns">
+                    <b-table-column :key="column.id" v-bind="column">
+                        <template
+                            v-if="column.searchable"
+                            #searchable="props">
+                            <b-input
+                                v-model="props.filters[props.column.field]"
+                                placeholder="Search..."
+                                icon="magnify"
+                                size="is-small" />
+                        </template>
 
-                <b-table-column field="action" label="Дествие" width="40" sortable  v-slot="props">
-                   <a :href="'/all/people/show?id=' + props.row.id" class="btn btn-light">Открыть</a>
-                </b-table-column>
+
+                        <template v-slot="props">
+
+                            <span v-if="props.column.field == 'id'">
+                              {{props.row.id}}
+                            </span>
+                            <span v-if="props.column.field == 'f'">
+                              <a :href="'/show?id=' + props.row.id">{{props.row.f}}</a>
+                            </span>
+                            <span v-if="props.column.field == 'i'">
+                              {{props.row.i}}
+                            </span>
+                            <span v-if="props.column.field == 'o'">
+                              {{props.row.o}}
+                            </span>
+                            <span v-if="props.column.field == 'performers'">
+                              {{props.row.performers.length}}
+                            </span>
+                            <span v-if="props.column.field == 'reconciliations'">
+                              {{props.row.reconciliations.length}}
+                            </span>
+
+                        </template>
+                    </b-table-column>
+                </template>
             </b-table>
         </div>
     </div>
@@ -73,7 +92,41 @@
                 selected: null,
                 data: [],
                 columns: [
-
+                    {
+                        field: 'id',
+                        label: 'ID',
+                        width: '20',
+                        numeric: true,
+                        searchable: false,
+                    },
+                    {
+                        field: 'f',
+                        label: 'Фамилия',
+                        width: '100',
+                        searchable: true,
+                    },
+                    {
+                        field: 'i',
+                        label: 'Имя',
+                        width: '100',
+                        searchable: false,
+                    }, {
+                        field: 'o',
+                        label: 'Отчество',
+                        width: '100',
+                        searchable: false,
+                    },
+                    {
+                        field: 'performers',
+                        label: 'Исполнение',
+                        width: '100',
+                        searchable: false,
+                    },{
+                        field: 'reconciliations',
+                        label: 'Согласование',
+                        width: '100',
+                        searchable: false,
+                    }
                 ],
                 draggingRow: null,
                 draggingRowIndex: null,
