@@ -70,9 +70,9 @@
                         <b-field class="mb-0" label="История исполнения">
                         </b-field>
                         <div v-for="item in arrIsplStatusArch">
-                                    <span class="tag">{{item.user}}:</span>
-                                    <span class="tag">{{item.created_at}}</span>
-                                    <span class="">{{ isplTextSearch(item.status)}}</span>
+                            <span class="tag">{{item.user}}:</span>
+                            <span class="tag">{{item.created_at}}</span>
+                            <span class="">{{ isplTextSearch(item.status)}}</span>
 
                         </div>
 
@@ -81,14 +81,14 @@
 
                 <div class="columns">
                     <div class="column">
-                        <p v-for="item in comments" :key="item.id" class="mb-3" styke="=">
-                            <b>№{{item.id}} </b> <b>{{formatDatesOne(item.date)}}</b><br> <a href="#"
-                                                                                             class="float-right">{{item.users}}</a><br>
-                            <span>{{item.comment}}</span>
-                            <br>
-                            <span v-for="item2 in item.files" :key="item2.id">
-                                <span><a v-bind:href="'/uploads/ticket_attached_files/'+id+'/'+item2">{{item2}}</a> </span>
-                            </span>
+                        <p v-for="item in comments" :key="item.id" class="mb-3" v-if="item.comment!='null'">
+                                <b>№{{item.id}} </b> <b>{{formatDatesOne(item.date)}}</b>
+                                <br> <a href="#" class="float-right">{{item.users}}</a><br>
+                                <span>{{item.comment}}</span>
+                                <br>
+                                <span v-for="item2 in item.files" :key="item2.id">
+                                    <span><a v-bind:href="'/uploads/ticket_attached_files/'+id+'/'+item2">{{item2}}</a> </span>
+                                </span>
                         </p>
                     </div>
                 </div>
@@ -98,7 +98,8 @@
                         </b-field>
                         <textarea class="textarea mb-1" rows="3" v-model="comment"
                                   placeholder="Текст сообщения..."></textarea>
-                        <b-button type="is-success is-small rounded" @click="addComment" style="float: left;margin-right: 20px">добавить комментарий
+                        <b-button type="is-success is-small rounded" @click="addComment"
+                                  style="float: left;margin-right: 20px">добавить комментарий
                         </b-button>
 
 
@@ -115,20 +116,18 @@
                         </div>
 
 
-
-
                     </div>
                     <div class="column is-3 is-narrow">
                         <b-field label="Прикрепить файлы">
                         </b-field>
                         <b-field class="file">
-                                <b-upload v-model="dropFiles" multiple drag-drop expanded style="height: 95px;">
-                                        <div class="content has-text-centered" style="padding-top: 15px;">
-                                            <p>
-                                                <b-icon icon="upload" size="is-large"></b-icon>
-                                            </p>
-                                        </div>
-                                </b-upload>
+                            <b-upload v-model="dropFiles" multiple drag-drop expanded style="height: 95px;">
+                                <div class="content has-text-centered" style="padding-top: 15px;">
+                                    <p>
+                                        <b-icon icon="upload" size="is-large"></b-icon>
+                                    </p>
+                                </div>
+                            </b-upload>
                         </b-field>
                     </div>
                 </div>
@@ -195,7 +194,8 @@
                 </div>
                 <div class="column">
                     <b-field class="mb-0" label="Выполнено">
-                        <div v-if="!editIspl"> - <b v-if="!statusProcent">0</b> <b v-if="statusProcent">{{statusProcent}}</b>%</div>
+                        <div v-if="!editIspl"> - <b v-if="!statusProcent">0</b> <b v-if="statusProcent">{{statusProcent}}</b>%
+                        </div>
                     </b-field>
 
                     <div v-if="editIspl">
@@ -467,14 +467,14 @@
             return {
                 arrIsplStatusArch: this.ispl,
                 arrSoglStatusArch: this.sogl,
-                arrZakazStatusArch:this.zakaz,
-                arrIsplProcentArch:this.procentispl,
+                arrZakazStatusArch: this.zakaz,
+                arrIsplProcentArch: this.procentispl,
 
                 editIspl: false,
                 editSogl: false,
-                editZakaz:false,
+                editZakaz: false,
 
-                selectProcentIspl:this.ticket.tekProcentIspl,
+                selectProcentIspl: this.ticket.tekProcentIspl,
                 statusProcent: this.ticket.tekProcentIspl,
                 statusIspl: this.ticket.tekStatusIspl,
                 statusSogl: this.ticket.tekStatusSogl,
@@ -529,10 +529,8 @@
                     {id: 4, name: 'Оценка работы 4'},
                     {id: 5, name: 'Оценка работы 5'},
                 ],
-                menu: [
-
-                ],
-                statusTicket:null,
+                menu: [],
+                statusTicket: null,
             }
         },
         props: {
@@ -670,7 +668,7 @@
 
                 this.form = new FormData()
                 this.isLoading = false;
-                 location.reload();
+                location.reload();
             },
             addProcentIspl: async function () {
                 this.isLoading = true;
@@ -725,7 +723,7 @@
             },
             addComment: async function () {
 
-                if(!this.comment){
+                if (!this.comment) {
                     this.warning()
                     return
                 }
