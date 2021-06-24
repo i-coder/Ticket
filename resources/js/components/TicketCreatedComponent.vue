@@ -363,7 +363,7 @@
                 customerGroup: null,
                 checkboxGroup: [],
                 editor: DecoupledEditor,
-                editorData: '',
+                editorData: null,
                 editorConfig: {
                     toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList',
                         'numberedList', 'blockQuote', '|', 'inserttable', 'tablecolumn', 'tablerow', 'mergetablecells', '|',
@@ -387,6 +387,7 @@
                 if (this.editorData == null) {
                     return false;
                 }
+
                 if (this.task == null) {
                     return false;
                 }
