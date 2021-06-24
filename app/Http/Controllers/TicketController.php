@@ -543,14 +543,16 @@ class TicketController extends Controller
         if (!empty($files)) {
             foreach ($files as $file) {
                 $fileName = json_decode($file->file);
-
-                foreach ($fileName as  $key=>$value) {
-                    $fileLinks[] = [
-                        'id' => $file->id,
-                        'path' => '/uploads/ticket_attached_files/' . $file->ticket_id . '/' . $value,
-                        'name' => $value
-                    ];
+                if (count($fileName) > 0) {
+                    foreach ($fileName as $key => $value) {
+                        $fileLinks[] = [
+                            'id' => $file->id,
+                            'path' => '/uploads/ticket_attached_files/' . $file->ticket_id . '/' . $value,
+                            'name' => $value
+                        ];
+                    }
                 }
+
 
             }
         }
@@ -715,22 +717,35 @@ class TicketController extends Controller
                 if ($tekStatusIspl->status == 1 and $tekStatusSogl->status == 2) {
 
                 } else {
-                    array_push(
-                        $ticketsInfo,
-                        [
-                            'id' => $ticket->id,
-                            'title' => $ticket->title,
-                            'priority' => $priority,
-                            'type_task' => $type_task,
-                            'date_start' => $date_start,
-                            'date_end' => $date_end,
-                            'performers' => $performers,
-                            'actions' => $actions,
-                            'work_status' => ($tekStatusIspl) ? (int)$tekStatusIspl->status : null,
-                            'sogl_status' => ($tekStatusSogl) ? (int)$tekStatusSogl->status : null,
-                            'procent' => ($tekStatusProcent) ? $tekStatusProcent->procent : 0,
-                        ]
-                    );
+                    $ticketsInfo[] = [
+                        'id' => $ticket->id,
+                        'title' => $ticket->title,
+                        'priority' => $priority,
+                        'type_task' => $type_task,
+                        'date_start' => $date_start,
+                        'date_end' => $date_end,
+                        'performers' => $performers,
+                        'actions' => $actions,
+                        'work_status' => ($tekStatusIspl) ? (int)$tekStatusIspl->status : null,
+                        'sogl_status' => ($tekStatusSogl) ? (int)$tekStatusSogl->status : null,
+                        'procent' => ($tekStatusProcent) ? $tekStatusProcent->procent : 0,
+                    ];
+//                    array_push(
+//                        $ticketsInfo,
+//                        [
+//                            'id' => $ticket->id,
+//                            'title' => $ticket->title,
+//                            'priority' => $priority,
+//                            'type_task' => $type_task,
+//                            'date_start' => $date_start,
+//                            'date_end' => $date_end,
+//                            'performers' => $performers,
+//                            'actions' => $actions,
+//                            'work_status' => ($tekStatusIspl) ? (int)$tekStatusIspl->status : null,
+//                            'sogl_status' => ($tekStatusSogl) ? (int)$tekStatusSogl->status : null,
+//                            'procent' => ($tekStatusProcent) ? $tekStatusProcent->procent : 0,
+//                        ]
+//                    );
                 }
             } else {
                 array_push(
@@ -767,7 +782,7 @@ class TicketController extends Controller
 //            $sort['date_start'][$k] = $v['date_start'];
 //        }
 //        array_multisort($sort['status'], SORT_ASC, $sort['date_start'], SORT_ASC, $ticketsInfo);
-
+        // krsort($ticketsInfo, SORT_NUMERIC);
         return json_encode($ticketsInfo);
     }
 
