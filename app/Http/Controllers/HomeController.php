@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\TableAll;
 use App\PeopleJob;
 use App\Performer;
 use App\Reconciliation;
@@ -30,6 +31,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //broadcast(new TableAll('refresh'))->toOthers();
+//        broadcast(new TableAll(1))->toOthers();
         return view('welcome');
     }
 

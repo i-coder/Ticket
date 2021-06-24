@@ -29,6 +29,8 @@
         "@ckeditor/ckeditor5-easy-image": "^25.0.0",
         "@ckeditor/ckeditor5-vue2": "^1.0.5",
         "buefy": "^0.9.7",
+        "laravel-echo": "^1.11.0",
+        "pusher-js": "^7.0.3",
         "vuejs-datepicker": "^1.6.2"
     }
 }

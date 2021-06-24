@@ -151,7 +151,13 @@
                     {id: 4, name: 'Оценка работы 4'},
                     {id: 5, name: 'Оценка работы 5'},
                 ],
-                noStatus:'без статуса'
+                noStatus:'без статуса',
+
+                activeUsers: [],
+                messages: [],
+                textMessage: '',
+                isActive: false,
+                typingTimer: false,
             }
         },
         methods: {
@@ -210,13 +216,47 @@
 
         },
         mounted() {
+            this.channel
+                .here((users) => {
+                    this.activeUsers = users;
+                })
+                .joining((user) => {
+                    this.activeUsers.push(user);
+                })
+                .leaving((user) => {
+                    this.activeUsers.splice(this.activeUsers.indexOf(user), 1);
+                })
+                .listen('TableAll', ({data}) => {
+                    this.loadAsyncData();
+                    this.$buefy.toast.open({
+                        message: 'Обновление задач',
+                        type: 'is-info',
+                        position:'is-bottom-right',
+                        duration:1000,
 
+                    })
+                    this.data.push({});
+                    this.messages.push(data);
+                    this.isActive = false;
+                    console.log(data);
+                })
+                .listenForWhisper('typing', (e) => {
+                    this.isActive = e;
+                    if(this.typingTimer) clearTimeout(this.typingTimer);
+                    this.typingTimer = setTimeout(() => {
+                        this.isActive = false;
+                    }, 2000);
+                });
 
         },
         created() {
             this.loadAsyncData();
         },
-        computed: {},
+        computed: {
+            channel() {
+                return window.Echo.join('room.refresh');
+            }
+        },
         watch: {
             'selectMenu': async function (bank) {
                 this.loadAsyncData()
