@@ -542,17 +542,19 @@ class TicketController extends Controller
 
         if (!empty($files)) {
             foreach ($files as $file) {
-                $fileName = json_decode($file->file);
-                if (count($fileName) > 0) {
-                    foreach ($fileName as $key => $value) {
-                        $fileLinks[] = [
-                            'id' => $file->id,
-                            'path' => '/uploads/ticket_attached_files/' . $file->ticket_id . '/' . $value,
-                            'name' => $value
-                        ];
+
+                if ($file->file) {
+                    $fileName = json_decode($file->file);
+                    if (count($fileName) > 0) {
+                        foreach ($fileName as $key => $value) {
+                            $fileLinks[] = [
+                                'id' => $file->id,
+                                'path' => '/uploads/ticket_attached_files/' . $file->ticket_id . '/' . $value,
+                                'name' => $value
+                            ];
+                        }
                     }
                 }
-
 
             }
         }
