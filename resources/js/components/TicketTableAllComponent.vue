@@ -186,7 +186,7 @@
 </template>
 
 <script>
-    import VueTableDynamic from 'vue-table-dynamic'
+
 
     export default {
         data() {
@@ -334,6 +334,6 @@
                 this.loadAsyncData()
             },
         },
-        components: {VueTableDynamic}
+        components: {}
     }
 </script>
