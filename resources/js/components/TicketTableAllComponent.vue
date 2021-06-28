@@ -15,7 +15,8 @@
                 <ul>
                     <li v-for="item in menu" :key="item.id" style="padding-left: 2px">
 
-                        <a v-if="selectMenu==item.id" @click.prevent="selectMenu = item.id" class="tag" style="margin-left: 0px">
+                        <a v-if="selectMenu==item.id" @click.prevent="selectMenu = item.id" class="tag"
+                           style="margin-left: 0px">
                             {{ item.name}}
                         </a>
                         <a v-if="selectMenu!=item.id" @click.prevent="selectMenu = item.id" class="tag"
@@ -108,87 +109,89 @@
 
             </b-table>
 
-<!--            <b-table-->
-<!--                paginated-->
-<!--                backend-pagination-->
-<!--                :total="total"-->
-<!--                :per-page="perPage"-->
-<!--                @page-change="onPageChange"-->
-<!--                :data="data"-->
-<!--                :pagination-rounded="true"-->
-<!--                :striped="true"-->
-<!--                aria-next-label="Next page"-->
-<!--                aria-previous-label="Previous page"-->
-<!--                aria-page-label="Page"-->
-<!--                aria-current-label="Current page">-->
-<!--                <template v-for="column in columns">-->
-<!--                    <b-table-column :key="column.id" v-bind="column">-->
-<!--                        <template-->
-<!--                            v-if="column.searchable"-->
-<!--                            #searchable="props">-->
-<!--                            <b-input-->
-<!--                                v-model="props.filters[props.column.field]"-->
-<!--                                placeholder="Search..."-->
-<!--                                icon="magnify"-->
-<!--                                size="is-small" />-->
-<!--                        </template>-->
+            <!--            <b-table-->
+            <!--                paginated-->
+            <!--                backend-pagination-->
+            <!--                :total="total"-->
+            <!--                :per-page="perPage"-->
+            <!--                @page-change="onPageChange"-->
+            <!--                :data="data"-->
+            <!--                :pagination-rounded="true"-->
+            <!--                :striped="true"-->
+            <!--                aria-next-label="Next page"-->
+            <!--                aria-previous-label="Previous page"-->
+            <!--                aria-page-label="Page"-->
+            <!--                aria-current-label="Current page">-->
+            <!--                <template v-for="column in columns">-->
+            <!--                    <b-table-column :key="column.id" v-bind="column">-->
+            <!--                        <template-->
+            <!--                            v-if="column.searchable"-->
+            <!--                            #searchable="props">-->
+            <!--                            <b-input-->
+            <!--                                v-model="props.filters[props.column.field]"-->
+            <!--                                placeholder="Search..."-->
+            <!--                                icon="magnify"-->
+            <!--                                size="is-small" />-->
+            <!--                        </template>-->
 
 
-<!--                        <template v-slot="props">-->
+            <!--                        <template v-slot="props">-->
 
-<!--                            <span v-if="props.column.field == 'id'" style="align-content: center">-->
-<!--                                <b>{{props.row.id}}</b>-->
-<!--                            </span>-->
-<!--                            <span v-if="props.column.field == 'title'">-->
-<!--                              <a :href="'/show?id=' + props.row.id">{{props.row.title}}</a>-->
-<!--                            </span>-->
+            <!--                            <span v-if="props.column.field == 'id'" style="align-content: center">-->
+            <!--                                <b>{{props.row.id}}</b>-->
+            <!--                            </span>-->
+            <!--                            <span v-if="props.column.field == 'title'">-->
+            <!--                              <a :href="'/show?id=' + props.row.id">{{props.row.title}}</a>-->
+            <!--                            </span>-->
 
-<!--                            <span v-if="props.column.field == 'performers'">-->
-<!--                                 <div v-for="user in props.row.performers" class="mb-2">-->
-<!--                                    <div>{{user.first_name}} {{user.last_name}}</div>-->
-<!--                                </div>-->
-<!--                            </span>-->
-<!--                            <span v-if="props.column.field == 'date_start'">-->
-<!--                              {{props.row.date_start}}-->
-<!--                            </span>-->
-<!--                            <span v-if="props.column.field == 'date_end'">-->
-<!--                              {{props.row.date_end}}-->
-<!--                            </span>-->
-<!--                            <span v-if="props.column.field == 'type_task'" class="tag is-light">-->
-<!--                              {{props.row.type_task}}-->
-<!--                            </span>-->
+            <!--                            <span v-if="props.column.field == 'performers'">-->
+            <!--                                 <div v-for="user in props.row.performers" class="mb-2">-->
+            <!--                                    <div>{{user.first_name}} {{user.last_name}}</div>-->
+            <!--                                </div>-->
+            <!--                            </span>-->
+            <!--                            <span v-if="props.column.field == 'date_start'">-->
+            <!--                              {{props.row.date_start}}-->
+            <!--                            </span>-->
+            <!--                            <span v-if="props.column.field == 'date_end'">-->
+            <!--                              {{props.row.date_end}}-->
+            <!--                            </span>-->
+            <!--                            <span v-if="props.column.field == 'type_task'" class="tag is-light">-->
+            <!--                              {{props.row.type_task}}-->
+            <!--                            </span>-->
 
-<!--                            <span v-if="props.column.field == 'procent'">-->
+            <!--                            <span v-if="props.column.field == 'procent'">-->
 
-<!--                                <div style="width: 100px;border:1px solid #2a9055;background-color: white;text-align: center;">-->
-<!--                                    <div class="" v-if="props.row.procent>0"-->
-<!--                                         v-bind:style="{ 'width': (props.row.procent) + 'px'}"-->
-<!--                                         style="background-color: #2a9055;text-align: center; color: black;position: relative;height: 20px">-->
-<!--                                        <div style="position: absolute;left: 30%;">{{ props.row.procent }}%</div>-->
-<!--                                    </div>-->
-<!--                                    <div class="" v-if="props.row.procent==0"-->
-<!--                                         v-bind:style="{ 'width': 100 + 'px'}"-->
-<!--                                         style="color: red;height: 20px;position: relative;">-->
-<!--                                        <div style="">{{ props.row.procent }}%</div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
+            <!--                                <div style="width: 100px;border:1px solid #2a9055;background-color: white;text-align: center;">-->
+            <!--                                    <div class="" v-if="props.row.procent>0"-->
+            <!--                                         v-bind:style="{ 'width': (props.row.procent) + 'px'}"-->
+            <!--                                         style="background-color: #2a9055;text-align: center; color: black;position: relative;height: 20px">-->
+            <!--                                        <div style="position: absolute;left: 30%;">{{ props.row.procent }}%</div>-->
+            <!--                                    </div>-->
+            <!--                                    <div class="" v-if="props.row.procent==0"-->
+            <!--                                         v-bind:style="{ 'width': 100 + 'px'}"-->
+            <!--                                         style="color: red;height: 20px;position: relative;">-->
+            <!--                                        <div style="">{{ props.row.procent }}%</div>-->
+            <!--                                    </div>-->
+            <!--                                </div>-->
 
-<!--                            </span>-->
+            <!--                            </span>-->
 
-<!--                        </template>-->
-<!--                    </b-table-column>-->
-<!--                    -->
-<!--                </template>-->
-<!--            </b-table>-->
+            <!--                        </template>-->
+            <!--                    </b-table-column>-->
+            <!--                    -->
+            <!--                </template>-->
+            <!--            </b-table>-->
         </div>
     </div>
 </template>
 
 <script>
+    import VueTableDynamic from 'vue-table-dynamic'
+
     export default {
         data() {
             return {
-                countTicketAll:0,
+                countTicketAll: 0,
                 sortIcon: 'arrow-up',
                 sortIconSize: 'is-small',
                 selectMenu: 1,
@@ -198,66 +201,16 @@
                 sortOrder: 'desc',
                 defaultSortOrder: 'desc',
                 page: 1,
+                filtem_f_n: [],
                 perPage: 15,
                 total: 0,
                 selected: null,
                 data: [],
+
                 draggingRow: null,
                 draggingRowIndex: null,
-                columns:[
-                    {
-                        field: 'id',
-                        label: '№',
-                        width: '15',
-                        searchable: true,
-                    },
-                    {
-                        field: 'title',
-                        label: 'Наименование',
-                        width: '200',
-                        searchable: true,
-                    },
-                    {
-                        field: 'performers',
-                        label: 'Исполнитель',
-                        width: '200',
-                    },
-                    {
-                        field: 'date_start',
-                        label: 'Начало',
-                        width: '50',
-                        searchable: true,
-                    },
-                    {
-                        field: 'date_end',
-                        label: 'Конец',
-                        width: '50',
-                        searchable: true,
-                    },
-                    {
-                        field: 'type_task',
-                        label: 'Тип',
-                        width: '50',
-                    },
-                    {
-                        field: 'procent',
-                        label: 'Выполнено',
-                        width: '50',
-                    },
-                    {
-                        field: 'work_status',
-                        label: 'Раб статус',
-                        width: '50',
-                    },
-                    {
-                        field: 'sogl_status',
-                        label: 'Сог статус',
-                        width: '50',
-                    },
-                ],
-                menu: [
 
-                ],
+                menu: [],
                 soglText: [
                     {id: 1, name: 'не согласован'},
                     {id: 2, name: 'cогласован'},
@@ -277,7 +230,7 @@
                     {id: 5, name: 'Оценка работы 5'},
                 ],
                 noStatus: 'без статуса',
-                countTicketNoStatus:null
+                countTicketNoStatus: null
             }
         },
         methods: {
@@ -305,6 +258,7 @@
             },
             loadAsyncData: async function () {
                 this.isLoading = true;
+
                 const params = [
                     'api_key=bb6f51bef07465653c3e553d6ab161a8',
                     `sort_by=${this.sortField}.${this.sortOrder}`,
@@ -322,14 +276,18 @@
                     })
                     .then((response) => todos = [...response.data])
                     .catch(error => console.log(error))
+
                 this.data = []
                 todos.forEach((value, index) => {
-                    this.data.push(value);
+                    this.data.push(value)
                     allTotal++;
                 });
+
                 this.total = allTotal
                 this.isLoading = false;
+
             },
+
             onPageChange(page) {
                 this.page = page
                 this.loadAsyncData()
@@ -376,5 +334,6 @@
                 this.loadAsyncData()
             },
         },
+        components: {VueTableDynamic}
     }
 </script>

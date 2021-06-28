@@ -446,6 +446,7 @@
                 );
                 this.isLoading = false;
                 this.success();
+                location.reload();
             },
             loadSubdivisionsName: async function () {
                 this.isLoading = true;
@@ -477,7 +478,7 @@
             },
             success() {
                 this.$buefy.toast.open({
-                    message: 'Отправленно на согласование!'
+                    message: 'Отправленно !'
                 })
             },
             warning() {
