@@ -400,7 +400,7 @@ class TicketController extends Controller
     {
 
         $id = (int)$request->get('id');
-        $ticket = Ticket::where('id','=',$id)->first();
+        $ticket = Ticket::where('id', '=', $id)->first();
 
         $ticket['time'] = \Carbon\Carbon::parse($ticket->created_at)->format('d.m.Y H:i:s');
 
@@ -612,7 +612,7 @@ class TicketController extends Controller
 
         $mUser = User::where('id', '=', $ticket->id_user)->first();
         $mUser['dates'] = \Carbon\Carbon::parse($mUser['created_at'])->format('d.m.Y H:i:s');
-      //  $ticket->created_at = \Carbon\Carbon::parse($ticket->created_at)->format('d.m.Y H:i');//TODO время карбон!
+        //  $ticket->created_at = \Carbon\Carbon::parse($ticket->created_at)->format('d.m.Y H:i');//TODO время карбон!
 
 //dd(['zakaz' => $arrZakazStatus, 'procentispl'=>$arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => User::find($ticket->id_user), 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
         return view('ticket.show', ['zakaz' => $arrZakazStatus, 'procentispl' => $arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => $mUser, 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
@@ -950,22 +950,27 @@ class TicketController extends Controller
         foreach ($one as $item) {
             $co = count($item->customers);
 
-            foreach($item->customers as $value2){
-                $sogl = TicketStatus::where('ticket_id','=',$value2['id'])
-                      ->where('status','=',TicketStatus::SOGLASOVANO)
+            foreach ($item->customers as $value2) {
+
+                $sogl = DB::table('ticket_status')
+                    ->where('ticket_id', '=', $value2['id'])
+                    ->where('roll', TicketStatus::SOGL)
+                    ->orderBy('created_at', 'desc')
                     ->first();
-                $sdel = TicketStatus::where('ticket_id','=',$value2['id'])
-                    ->where('status','=',TicketStatus::SDELA)
+                $sdel = DB::table('ticket_status')
+                    ->where('ticket_id', '=', $value2['id'])
+                    ->where('roll', TicketStatus::ISPL)
+                    ->orderBy('created_at', 'desc')
                     ->first();
-                if($sogl){
-                    if($sdel){
-                        //$co=$co-1;
+                if ($sogl != null and $sdel != null) {
+                    if ($sogl->status != 1 and $sdel->status != 2) {
+                        $co--;
                     }
                 }
             }
 
             $item['count_ticket'] = $co;
-            //$i = $i + $co;
+
             array_push($menu, $item);
             foreach ($item->customers as $customer) {
                 if (count($customer->statusTicketAll) == 0) {
