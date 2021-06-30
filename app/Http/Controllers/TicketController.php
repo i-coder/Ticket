@@ -948,35 +948,38 @@ class TicketController extends Controller
         $i = 0;
         $p = 0;
         foreach ($one as $item) {
-            $co = count($item->customers);
+            if(count($item->customers)>0){
+                $co = count($item->customers);
 
-            foreach ($item->customers as $value2) {
+                foreach ($item->customers as $value2) {
 
-                $sogl = DB::table('ticket_status')
-                    ->where('ticket_id', '=', $value2['id'])
-                    ->where('roll', TicketStatus::SOGL)
-                    ->orderBy('created_at', 'desc')
-                    ->first();
-                $sdel = DB::table('ticket_status')
-                    ->where('ticket_id', '=', $value2['id'])
-                    ->where('roll', TicketStatus::ISPL)
-                    ->orderBy('created_at', 'desc')
-                    ->first();
-                if ($sogl != null and $sdel != null) {
-                    if ($sogl->status != 1 and $sdel->status != 2) {
+                    $sogl = DB::table('ticket_status')
+                        ->where('ticket_id', '=', $value2['id'])
+                        ->where('roll', TicketStatus::SOGL)
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+                    $sdel = DB::table('ticket_status')
+                        ->where('ticket_id', '=', $value2['id'])
+                        ->where('roll', TicketStatus::ISPL)
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+                    if ($sogl != null and $sdel != null) {
                         $co--;
                     }
                 }
+                $item['count_ticket'] = $co;
+
+                array_push($menu, $item);
+                foreach ($item->customers as $customer) {
+                    if (count($customer->statusTicketAll) == 0) {
+                        $p++;
+                    };
+                }
             }
 
-            $item['count_ticket'] = $co;
 
-            array_push($menu, $item);
-            foreach ($item->customers as $customer) {
-                if (count($customer->statusTicketAll) == 0) {
-                    $p++;
-                };
-            }
+
+
         }
         $r = [
             'menus' => $menu,
