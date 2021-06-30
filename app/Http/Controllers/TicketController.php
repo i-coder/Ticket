@@ -400,7 +400,13 @@ class TicketController extends Controller
     {
 
         $id = (int)$request->get('id');
-        $ticket = Ticket::find($id);
+        $ticket = Ticket::where('id','=',$id)->first();
+
+//        dump($ticket);
+//        dump($ticket['updated_at']);
+//        $ticket->created_at = \Carbon\Carbon::parse($ticket->created_at)->format('d.m.Y H:i');
+        $ticket['time'] = \Carbon\Carbon::parse($ticket->created_at)->format('d.m.Y H:i:s');
+//        dd();
 
         $statusIspl = $ticket->statusTicketIspl;
 
@@ -610,6 +616,7 @@ class TicketController extends Controller
 
         $mUser = User::where('id', '=', $ticket->id_user)->first();
         $mUser['dates'] = \Carbon\Carbon::parse($mUser['created_at'])->format('d.m.Y H:i:s');
+      //  $ticket->created_at = \Carbon\Carbon::parse($ticket->created_at)->format('d.m.Y H:i');//TODO время карбон!
 
 //dd(['zakaz' => $arrZakazStatus, 'procentispl'=>$arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => User::find($ticket->id_user), 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);
         return view('ticket.show', ['zakaz' => $arrZakazStatus, 'procentispl' => $arrIsplProcent, 'ispl' => $arrIsplStatus, 'sogl' => $arrSoglStatus, 'customer' => $customer, 'comments' => $comments_data, 'user' => $mUser, 'ticket' => $ticket, 'performers' => $performers_data, 'reconciliations' => $reconciliations_data, 'files' => $fileLinks]);

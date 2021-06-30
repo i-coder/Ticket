@@ -35,7 +35,8 @@
                         <b-field class="mb-0" label="Задача создана">
                         </b-field>
                         <div>
-                            <span class="tag">{{user.f}} {{user.i}} {{user.o}}</span>{{user.dates}}
+                            <span class="tag">{{user.f}} {{user.i}} {{user.o}}</span>
+                            <span class="tag">{{ticket.time}}</span>
                         </div>
 
                     </div>
@@ -483,6 +484,7 @@
                 statusIsplUser: this.ticket.isplUser,
                 statusSoglUser: this.ticket.soglUser,
 
+                tickets: this.ticket,
                 auth: this.auth,
                 comments: [],
                 id: this.ticket.id,

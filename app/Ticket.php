@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Ticket extends Model
@@ -9,7 +10,7 @@ class Ticket extends Model
     public $table = 'table_tickets';
 
     public $fillable = ['date_start', 'customer', 'date_end', 'msg', 'type_task', 'priority', 'title', 'id_user', 'status', 'delete'];
-
+    protected $dates = ['created_at', 'updated_at'];
     const URLAGENCY = 'http://146.158.79.84:8835/july_2020/ws/WSAgency.1cws?wsdl';
     const USERAGENCY = 'userwww';
     const USERPASSWORD = '123';
@@ -31,6 +32,11 @@ class Ticket extends Model
         return $this->hasMany('App\Reconciliation');
     }
 
+//    public function getUpdatedAtAttribute($date)
+//    {
+//        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
+//    }
+
     /**
      * Связь с моделью "Performer".
      */
@@ -38,33 +44,39 @@ class Ticket extends Model
     {
         return $this->hasMany('App\Performer');
     }
+
     public function statusTicketIspl()
     {
-        return $this->hasMany('App\TicketStatus', 'ticket_id', 'id')->where('roll','=',TicketStatus::ISPL);
+        return $this->hasMany('App\TicketStatus', 'ticket_id', 'id')->where('roll', '=', TicketStatus::ISPL);
     }
+
     public function statusTicketIsplGroup()
     {
-        return $this->hasMany('App\TicketStatus', 'ticket_id', 'id')->where('roll','=',TicketStatus::ISPL)->groupBy('user_id');
+        return $this->hasMany('App\TicketStatus', 'ticket_id', 'id')->where('roll', '=', TicketStatus::ISPL)->groupBy('user_id');
     }
+
     public function statusTicketSogl()
     {
-        return $this->hasMany('App\TicketStatus', 'ticket_id', 'id')->where('roll','=',TicketStatus::SOGL);
+        return $this->hasMany('App\TicketStatus', 'ticket_id', 'id')->where('roll', '=', TicketStatus::SOGL);
     }
+
     public function statusTicketAll()
     {
         return $this->hasMany('App\TicketStatus', 'ticket_id', 'id');
     }
+
     public function statusTicketAllAuth()
     {
-        return $this->hasMany('App\TicketStatus', 'ticket_id', 'id')->where('user_id','=',\Auth::id());
+        return $this->hasMany('App\TicketStatus', 'ticket_id', 'id')->where('user_id', '=', \Auth::id());
     }
+
     //получаем не согласованные тикеты
     public function statusTicketSoglAuth()
     {
         return $this->hasMany('App\TicketStatus', 'ticket_id', 'id')
-            ->where('roll','=',TicketStatus::SOGL)
-            ->where('user_id','=',\Auth::id())
-            ->where('status','=',TicketStatus::NESOGLASOVANO);
+            ->where('roll', '=', TicketStatus::SOGL)
+            ->where('user_id', '=', \Auth::id())
+            ->where('status', '=', TicketStatus::NESOGLASOVANO);
     }
 
     /**
@@ -74,12 +86,13 @@ class Ticket extends Model
     {
         return $this->hasMany('App\File');
     }
+
     /**
      * Связь с моделью "File".
      */
     public function comments()
     {
-        return $this->hasMany('App\Comment')->orderBy('id','ASC');
+        return $this->hasMany('App\Comment')->orderBy('id', 'ASC');
     }
 
     /**
@@ -109,6 +122,7 @@ class Ticket extends Model
             return response()->json(['status' => $e->getMessage()], 405);
         }
     }
+
     /**
      * Получение списка пользователей из системы 1С (AD)
      */
