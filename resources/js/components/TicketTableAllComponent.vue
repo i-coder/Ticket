@@ -13,7 +13,7 @@
             </div>
             <div class="" style="">
                 <ul>
-                    <li v-for="item in menu" :key="item.id" style="padding-left: 2px">
+                    <li v-for="item in menu" :key="item.id" style="padding-left: 2px;margin-bottom: 2px;">
 
                         <a v-if="selectMenu==item.id" @click.prevent="selectMenu = item.id" class="tag"
                            style="margin-left: 0px">
