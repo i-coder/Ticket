@@ -963,7 +963,7 @@ class TicketController extends Controller
                         ->where('roll', TicketStatus::ISPL)
                         ->orderBy('created_at', 'desc')
                         ->first();
-                    if ($sogl != null and $sdel != null) {
+                    if ($sogl != null AND $sdel != null) {
                         $co--;
                     }
                 }
@@ -1530,7 +1530,40 @@ class TicketController extends Controller
     public
     function showPeopleWork(Request $request)
     {
-        return view('people.tickets', ['user_id' => $request->id]);
+
+        $user = User::where('id', '=', $request->id)->first();
+
+        $all = 0;
+        $ispl = 0;
+        $work=0;
+        foreach ($user->performers as $item) {
+            if(Ticket::where('id', '=', $item['ticket_id'])->get()){
+                $all++;
+            };
+            $rWork = DB::table('ticket_status')
+                ->where('ticket_id', '=', $item['ticket_id'])
+                ->where('roll', TicketStatus::ISPL)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            if($rWork!=null AND $rWork->status == TicketStatus::VRABO){
+                $work++;
+            }
+        }
+
+        $ispl = count(DB::table('ticket_status')
+            ->where('user_id', '=', $request->id)
+            ->where('roll', TicketStatus::ISPL)
+            ->where('status', TicketStatus::SDELA)
+            ->get());
+
+        return view('people.tickets', ['user_id' => $request->id,
+            'users'=>$user,
+            'work'=>$work,
+            'ispl'=>$ispl,
+            'all'=>$all
+
+        ]);
     }
 
     /*

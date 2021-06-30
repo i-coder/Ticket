@@ -3,33 +3,7 @@
         <b-loading :is-full-page="isFullPage" v-model="isLoading" :can-cancel="false">
         </b-loading>
         <div class="column is-3">
-            <div class="field is-grouped is-grouped-multiline">
-                <div class="control">
-                    <div class="tags has-addons">
-                        <span class="tag is-dark">Фильтр</span>
-                        <span class="tag is-danger">подразделений</span>
-                    </div>
-                </div>
-            </div>
-            <div class="" style="position: fixed ">
-                <ul>
-                    <li v-for="item in menu" :key="item.id" style="padding-left: 2px">
 
-                        <a v-if="selectMenu==item.id" @click.prevent="selectMenu = item.id" class="tag" style="margin-left: 0px">
-                            {{ item.name}}
-                        </a>
-                        <a v-if="selectMenu!=item.id" @click.prevent="selectMenu = item.id" class="tag"
-                           style="">
-                            {{ item.name}}
-                        </a>
-                        <small v-if="item.id==1" class="tag is-info is-light">{{countTicketAll}}</small>
-                        <small v-if="item.id==-1" class="tag is-info is-light">{{countTicketNoStatus}}</small>
-                        <small class="tag is-info is-light" v-if="item.count_ticket!=0 && item.id>1">{{item.count_ticket}}</small>
-                        <i v-if="selectMenu==item.id" style="color: #48c774" class=" fa fa-circle fa-fw"
-                           aria-hidden="true"></i>
-                    </li>
-                </ul>
-            </div>
         </div>
         <div class="column is-9">
             <div class="field is-grouped is-grouped-multiline">

@@ -4,6 +4,29 @@
             <b-loading :is-full-page="isFullPage" v-model="isLoading" :can-cancel="false">
             </b-loading>
             <div class="column is-3">
+                <nav class="panel is-info  mt-5">
+                    <p class="panel-heading">
+                        {{users.f}} {{users.i}} {{users.o}}
+                    </p>
+                    <div class="panel-block">
+                    </div>
+                    <p class="panel-tabs">
+                        <a class="is-active">Общая информация</a>
+                        <a>Календарь</a>
+                    </p>
+                    <a class="panel-block ">
+                        <div style="width: 200px;text-align: right;margin-right: 10px">Всего заданий  </div> <b>{{all}}</b>
+                    </a>
+                    <a class="panel-block ">
+                        <div style="width: 200px;text-align: right;margin-right: 10px">Выполнено  </div> <b>{{ispl}}</b>
+                    </a>
+                    <a class="panel-block ">
+                        <div style="width: 200px;text-align: right;margin-right: 10px">В работе  </div> <b>{{work}}</b>
+                    </a>
+                    <a class="panel-block ">
+                        <div style="width: 200px;text-align: right;margin-right: 10px">Согласовано  </div>
+                    </a>
+                </nav>
 
             </div>
             <div class="column is-9">
@@ -168,6 +191,18 @@
             user_id: {
                 type: Object,
             },
+            users: {
+                type: Object,
+            },
+            work: {
+                type: Object,
+            },
+            ispl: {
+                type: Object,
+            },
+            all: {
+                type: Object,
+            },
 
         },
         methods: {
@@ -282,7 +317,7 @@
             },
         },
         mounted() {
-            this.loadSubdivisionsName();
+            // this.loadSubdivisionsName();
 
         },
         created() {
