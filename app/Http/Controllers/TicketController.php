@@ -402,11 +402,7 @@ class TicketController extends Controller
         $id = (int)$request->get('id');
         $ticket = Ticket::where('id','=',$id)->first();
 
-//        dump($ticket);
-//        dump($ticket['updated_at']);
-//        $ticket->created_at = \Carbon\Carbon::parse($ticket->created_at)->format('d.m.Y H:i');
         $ticket['time'] = \Carbon\Carbon::parse($ticket->created_at)->format('d.m.Y H:i:s');
-//        dd();
 
         $statusIspl = $ticket->statusTicketIspl;
 
@@ -723,9 +719,7 @@ class TicketController extends Controller
 
 
             if ($tekStatusIspl != null and $tekStatusSogl != null) {
-                if ($tekStatusIspl->status == 1 and $tekStatusSogl->status == 2) {
-
-                } else {
+                if ($tekStatusIspl->status != 1 and $tekStatusSogl->status != 2) {
                     $ticketsInfo[] = [
                         'id' => $ticket->id,
                         'title' => $ticket->title,
@@ -739,22 +733,6 @@ class TicketController extends Controller
                         'sogl_status' => ($tekStatusSogl) ? (int)$tekStatusSogl->status : null,
                         'procent' => ($tekStatusProcent) ? $tekStatusProcent->procent : 0,
                     ];
-//                    array_push(
-//                        $ticketsInfo,
-//                        [
-//                            'id' => $ticket->id,
-//                            'title' => $ticket->title,
-//                            'priority' => $priority,
-//                            'type_task' => $type_task,
-//                            'date_start' => $date_start,
-//                            'date_end' => $date_end,
-//                            'performers' => $performers,
-//                            'actions' => $actions,
-//                            'work_status' => ($tekStatusIspl) ? (int)$tekStatusIspl->status : null,
-//                            'sogl_status' => ($tekStatusSogl) ? (int)$tekStatusSogl->status : null,
-//                            'procent' => ($tekStatusProcent) ? $tekStatusProcent->procent : 0,
-//                        ]
-//                    );
                 }
             } else {
                 array_push(
@@ -971,8 +949,23 @@ class TicketController extends Controller
         $p = 0;
         foreach ($one as $item) {
             $co = count($item->customers);
+
+            foreach($item->customers as $value2){
+                $sogl = TicketStatus::where('ticket_id','=',$value2['id'])
+                      ->where('status','=',TicketStatus::SOGLASOVANO)
+                    ->first();
+                $sdel = TicketStatus::where('ticket_id','=',$value2['id'])
+                    ->where('status','=',TicketStatus::SDELA)
+                    ->first();
+                if($sogl){
+                    if($sdel){
+                        //$co=$co-1;
+                    }
+                }
+            }
+
             $item['count_ticket'] = $co;
-            $i = $i + $co;
+            //$i = $i + $co;
             array_push($menu, $item);
             foreach ($item->customers as $customer) {
                 if (count($customer->statusTicketAll) == 0) {
