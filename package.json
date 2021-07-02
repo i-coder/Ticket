@@ -10,7 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
-        "axios": "^0.19.2",
+        "axios": ">=0.21.1",
         "bootstrap": "^4.0.0",
         "cross-env": "^7.0.3",
         "jquery": "^3.6.0",
@@ -18,19 +18,22 @@
         "lodash": "^4.17.21",
         "popper.js": "^1.12",
         "resolve-url-loader": "^2.3.1",
-        "sass": "^1.32.13",
+        "sass": "^1.35.1",
         "sass-loader": "^8.0.0",
-        "vue": "^2.5.17",
-        "vue-template-compiler": "^2.6.10"
+        "vue": "^2.6.14",
+        "vue-template-compiler": "^2.6.14"
     },
     "dependencies": {
         "@ckeditor/ckeditor5-build-classic": "^25.0.0",
         "@ckeditor/ckeditor5-build-decoupled-document": "^25.0.0",
         "@ckeditor/ckeditor5-easy-image": "^25.0.0",
         "@ckeditor/ckeditor5-vue2": "^1.0.5",
-        "buefy": "^0.9.7",
+        "buefy": "^0.9.8",
         "laravel-echo": "^1.11.0",
         "pusher-js": "^7.0.3",
+        "vue-table-dynamic": "^0.4.5",
+        "vue-tables-2": "^2.3.1",
+        "vue2-datepicker": "^3.9.1",
         "vuejs-datepicker": "^1.6.2"
     }
 }
