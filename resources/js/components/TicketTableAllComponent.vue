@@ -334,6 +334,12 @@
             'selectMenu': async function (bank) {
                 this.loadAsyncData()
             },
+            'selectUsers': async function (bank) {
+                this.loadAsyncData()
+            },
+            'selectType': async function (bank) {
+                this.loadAsyncData()
+            }
         },
         props: {
             users: {
