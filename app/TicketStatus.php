@@ -19,6 +19,7 @@ class TicketStatus extends Model
     const NEGOT = 3;
     const TESTI = 4;
     const PAUZA = 5;
+    const OTMEN = 6;
 
     //согласование статусы
     const SOGLASOVANO = 2;
