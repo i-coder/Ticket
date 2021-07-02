@@ -40,6 +40,7 @@ foreach ($recon as $item) {
     <!-- Fonts -->
     <link href="{{ asset('css/materialdesignicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/all.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/datepicker.css') }}" rel="stylesheet">
 
     <style>
         body {

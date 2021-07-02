@@ -33,7 +33,8 @@ class HomeController extends Controller
     {
         //broadcast(new TableAll('refresh'))->toOthers();
 //        broadcast(new TableAll(1))->toOthers();
-        return view('welcome');
+
+        return view('welcome', ['users'=>User::all()]);
     }
 
     public function youTickets()

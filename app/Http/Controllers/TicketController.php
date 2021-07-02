@@ -49,6 +49,11 @@ class TicketController extends Controller
         4 => 'Автоматизация',
     ];
 
+    public $selectUsersIspl;
+    public $selectTypeTicket;
+    public $selectDateStartTicket;
+    public $selectEndStartTicket;
+
     protected $fileUploadPath = 'uploads/ticket_attached_files/';
 
     /**
@@ -679,13 +684,61 @@ class TicketController extends Controller
         $findProperty = explode("&", $request->data);
         $findCategory = explode("=", $findProperty[3]);
 
+        $this->selectUsersIspl = explode("=", $findProperty[4]);
+        $this->selectTypeTicket = explode("=", $findProperty[5]);
+        $this->selectDateStartTicket = explode("=", $findProperty[6]);
+        $this->selectEndStartTicket = explode("=", $findProperty[7]);
+
+
         $ticketsInfo = [];
         $performersInfo = [];
 
         if ($findCategory[1] > 1) {
-            $tickets = Ticket::where('customer', '=', $findCategory[1])->get();
+            /*
+             * Если выбрана категория то поиск джонимм + доп параметры при поиске
+             * */
+            $query = DB::table('table_tickets')
+                ->where('customer', '=', $findCategory[1]);
+            if ($this->selectUsersIspl[1] > 1) {
+                $query->join('table_performers', function ($join) {
+                    $join->on('table_performers.ticket_id', '=', 'table_tickets.id')
+                        ->where('table_performers.user_id', '=', $this->selectUsersIspl[1]);
+                });
+            }
+            if ($this->selectTypeTicket[1] > 1) {
+                $query->where('table_tickets.type_task', '=', $this->selectTypeTicket[1]);
+            }
+            if ($this->selectDateStartTicket[1] != "null") {
+                $query->where('table_tickets.date_start', '>=', $this->selectDateStartTicket[1]);
+            }
+            if ($this->selectEndStartTicket[1] != "null") {
+                $query->where('table_tickets.date_start', '<=', $this->selectEndStartTicket[1]);
+            }
+            $tickets = $query->get();
+
         } else {
-            $tickets = Ticket::all();
+            /*
+            * Если не выбрана категория то поиск джонимм + доп параметры при поиске
+            * */
+            $query = DB::table('table_tickets');
+            if ($this->selectUsersIspl[1] > 1) {
+                $query->join('table_performers', function ($join) {
+                    $join->on('table_performers.ticket_id', '=', 'table_tickets.id')
+                        ->where('table_performers.user_id', '=', $this->selectUsersIspl[1]);
+                });
+            }
+            if ($this->selectTypeTicket[1] > 1) {
+                $query->where('table_tickets.type_task', '=', $this->selectTypeTicket[1]);
+            }
+
+            if ($this->selectDateStartTicket[1] != "null") {
+                $query->where('table_tickets.date_start', '>=', $this->selectDateStartTicket[1]);
+            }
+            if ($this->selectEndStartTicket[1] != "null") {
+                $query->where('table_tickets.date_start', '<=', $this->selectEndStartTicket[1]);
+            }
+
+            $tickets = $query->get();
         }
 
 
@@ -693,35 +746,43 @@ class TicketController extends Controller
 
             $priority = $this->priorities[$ticket->priority] ?? '';
             $type_task = $this->tasks[$ticket->type_task] ?? '';
-            $performers = $ticket->performer->all();
+
+            $ticket_id = (!isset($ticket->ticket_id)) ? $ticket->id : $ticket->ticket_id;
+            
+            $performers = DB::table('table_performers')
+                ->where('ticket_id', '=', $ticket_id)
+                ->get();
+
             setlocale(LC_TIME, 'ru_RU.UTF-8');
             $date_start = strftime('%d.%m.%y', strtotime($ticket->date_start));
             $date_end = strftime('%d.%m.%y', strtotime($ticket->date_end));
-            $actions = '<a href="/show?id=' . $ticket->id . '"> Открыть </a>';
+            $actions = '<a href="/show?id=' . $ticket_id . '"> Открыть </a>';
             // $status = self::STATUSES[$ticket->status];
 
             $tekStatusSogl = DB::table('ticket_status')
-                ->where('ticket_id', '=', $ticket->id)
+                ->where('ticket_id', '=', $ticket_id)
                 ->where('roll', TicketStatus::SOGL)
                 ->orderBy('created_at', 'desc')
                 ->first();
 
+
             $tekStatusIspl = DB::table('ticket_status')
-                ->where('ticket_id', '=', $ticket->id)
+                ->where('ticket_id', '=', $ticket_id)
                 ->where('roll', TicketStatus::ISPL)
                 ->orderBy('created_at', 'desc')
                 ->first();
 
             $tekStatusProcent = DB::table('table_procent_ticket')
-                ->where('ticket_id', '=', $ticket->id)
+                ->where('ticket_id', '=', $ticket_id)
                 ->orderBy('created_at', 'desc')
                 ->first();
 
 
             if ($tekStatusIspl != null and $tekStatusSogl != null) {
+
                 if ($tekStatusIspl->status != 1 and $tekStatusSogl->status != 2) {
                     $ticketsInfo[] = [
-                        'id' => $ticket->id,
+                        'id' => $ticket_id,
                         'title' => $ticket->title,
                         'priority' => $priority,
                         'type_task' => $type_task,
@@ -738,7 +799,7 @@ class TicketController extends Controller
                 array_push(
                     $ticketsInfo,
                     [
-                        'id' => $ticket->id,
+                        'id' => $ticket_id,
                         'title' => $ticket->title,
                         'priority' => $priority,
                         'type_task' => $type_task,
@@ -948,7 +1009,7 @@ class TicketController extends Controller
         $i = 0;
         $p = 0;
         foreach ($one as $item) {
-            if(count($item->customers)>0){
+            if (count($item->customers) > 0) {
                 $co = count($item->customers);
 
                 foreach ($item->customers as $value2) {
@@ -963,7 +1024,7 @@ class TicketController extends Controller
                         ->where('roll', TicketStatus::ISPL)
                         ->orderBy('created_at', 'desc')
                         ->first();
-                    if ($sogl != null AND $sdel != null) {
+                    if ($sogl != null and $sdel != null) {
                         $co--;
                     }
                 }
@@ -976,8 +1037,6 @@ class TicketController extends Controller
                     };
                 }
             }
-
-
 
 
         }
@@ -1535,9 +1594,9 @@ class TicketController extends Controller
 
         $all = 0;
         $ispl = 0;
-        $work=0;
+        $work = 0;
         foreach ($user->performers as $item) {
-            if(Ticket::where('id', '=', $item['ticket_id'])->get()){
+            if (Ticket::where('id', '=', $item['ticket_id'])->get()) {
                 $all++;
             };
             $rWork = DB::table('ticket_status')
@@ -1546,7 +1605,7 @@ class TicketController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->first();
 
-            if($rWork!=null AND $rWork->status == TicketStatus::VRABO){
+            if ($rWork != null and $rWork->status == TicketStatus::VRABO) {
                 $work++;
             }
         }
@@ -1558,10 +1617,10 @@ class TicketController extends Controller
             ->get());
 
         return view('people.tickets', ['user_id' => $request->id,
-            'users'=>$user,
-            'work'=>$work,
-            'ispl'=>$ispl,
-            'all'=>$all
+            'users' => $user,
+            'work' => $work,
+            'ispl' => $ispl,
+            'all' => $all
 
         ]);
     }

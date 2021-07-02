@@ -41,6 +41,58 @@
                     </div>
                 </div>
             </div>
+            <div class="box">
+
+                <span class="tag" style="padding: 15px">Исполнитель</span>
+                <div class="select is-small">
+                    <select v-model="selectUsers">
+                        <option value="">Выбрать</option>
+                        <option v-for="option in users" v-bind:value="option.id">
+                            {{ option.f }}
+                        </option>
+                    </select>
+                </div>
+
+                <span class="tag " style="padding: 15px">Тип</span>
+                <div class="select is-small">
+                    <select v-model="selectType">
+                        <option value="">Выбрать</option>
+                        <option value="0">Техническое задание</option>
+                        <option value="1">Согласование</option>
+                        <option value="2">Задача</option>
+                        <option value="3">Служебка</option>
+                        <option value="4">Автоматизация</option>
+                    </select>
+                </div>
+
+                <span class="tag" style="padding: 15px;">c</span>
+                <div class="" style="display: inline-block">
+                    <date-picker
+                        v-model="selectDateStart"
+                        value-type="format"
+                        format="DD.MM.YYYY"
+                        type="date"
+                        confirm="true"
+                        placeholder="Выбрать дату"
+                        prefix-class="xmx"
+                    ></date-picker>
+                </div>
+                <span class="tag" style="padding: 15px">по</span>
+                <div class="" style="display: inline-block">
+                    <date-picker
+                        v-model="selectEndStart"
+                        value-type="format"
+                        format="DD.MM.YYYY"
+                        type="date"
+                        confirm="true"
+                        placeholder="Выбрать дату"
+                        prefix-class="xmx"
+                    ></date-picker>
+                </div>
+                <span class="ml-1 p-2"><a href="" v-on:click.prevent="findTickets">Выбрать</a></span>
+                <span class="ml-1 p-2"><a href="" v-on:click.prevent="findTicketsReset">Сбросить форму</a></span>
+
+            </div>
             <b-table
                 paginated
                 backend-pagination
@@ -108,89 +160,23 @@
                 </b-table-column>
 
             </b-table>
-
-            <!--            <b-table-->
-            <!--                paginated-->
-            <!--                backend-pagination-->
-            <!--                :total="total"-->
-            <!--                :per-page="perPage"-->
-            <!--                @page-change="onPageChange"-->
-            <!--                :data="data"-->
-            <!--                :pagination-rounded="true"-->
-            <!--                :striped="true"-->
-            <!--                aria-next-label="Next page"-->
-            <!--                aria-previous-label="Previous page"-->
-            <!--                aria-page-label="Page"-->
-            <!--                aria-current-label="Current page">-->
-            <!--                <template v-for="column in columns">-->
-            <!--                    <b-table-column :key="column.id" v-bind="column">-->
-            <!--                        <template-->
-            <!--                            v-if="column.searchable"-->
-            <!--                            #searchable="props">-->
-            <!--                            <b-input-->
-            <!--                                v-model="props.filters[props.column.field]"-->
-            <!--                                placeholder="Search..."-->
-            <!--                                icon="magnify"-->
-            <!--                                size="is-small" />-->
-            <!--                        </template>-->
-
-
-            <!--                        <template v-slot="props">-->
-
-            <!--                            <span v-if="props.column.field == 'id'" style="align-content: center">-->
-            <!--                                <b>{{props.row.id}}</b>-->
-            <!--                            </span>-->
-            <!--                            <span v-if="props.column.field == 'title'">-->
-            <!--                              <a :href="'/show?id=' + props.row.id">{{props.row.title}}</a>-->
-            <!--                            </span>-->
-
-            <!--                            <span v-if="props.column.field == 'performers'">-->
-            <!--                                 <div v-for="user in props.row.performers" class="mb-2">-->
-            <!--                                    <div>{{user.first_name}} {{user.last_name}}</div>-->
-            <!--                                </div>-->
-            <!--                            </span>-->
-            <!--                            <span v-if="props.column.field == 'date_start'">-->
-            <!--                              {{props.row.date_start}}-->
-            <!--                            </span>-->
-            <!--                            <span v-if="props.column.field == 'date_end'">-->
-            <!--                              {{props.row.date_end}}-->
-            <!--                            </span>-->
-            <!--                            <span v-if="props.column.field == 'type_task'" class="tag is-light">-->
-            <!--                              {{props.row.type_task}}-->
-            <!--                            </span>-->
-
-            <!--                            <span v-if="props.column.field == 'procent'">-->
-
-            <!--                                <div style="width: 100px;border:1px solid #2a9055;background-color: white;text-align: center;">-->
-            <!--                                    <div class="" v-if="props.row.procent>0"-->
-            <!--                                         v-bind:style="{ 'width': (props.row.procent) + 'px'}"-->
-            <!--                                         style="background-color: #2a9055;text-align: center; color: black;position: relative;height: 20px">-->
-            <!--                                        <div style="position: absolute;left: 30%;">{{ props.row.procent }}%</div>-->
-            <!--                                    </div>-->
-            <!--                                    <div class="" v-if="props.row.procent==0"-->
-            <!--                                         v-bind:style="{ 'width': 100 + 'px'}"-->
-            <!--                                         style="color: red;height: 20px;position: relative;">-->
-            <!--                                        <div style="">{{ props.row.procent }}%</div>-->
-            <!--                                    </div>-->
-            <!--                                </div>-->
-
-            <!--                            </span>-->
-
-            <!--                        </template>-->
-            <!--                    </b-table-column>-->
-            <!--                    -->
-            <!--                </template>-->
-            <!--            </b-table>-->
         </div>
     </div>
 </template>
 
 <script>
-
+    import DatePicker from 'vue2-datepicker';
+    import 'vue2-datepicker/locale/ru';
 
     export default {
         data() {
             return {
+                selectUsers: '',
+                selectType: '',
+                selectDateStart: null,
+                selectEndStart: null,
+
+
                 countTicketAll: 0,
                 sortIcon: 'arrow-up',
                 sortIconSize: 'is-small',
@@ -263,7 +249,11 @@
                     'api_key=bb6f51bef07465653c3e553d6ab161a8',
                     `sort_by=${this.sortField}.${this.sortOrder}`,
                     `page=${this.page}`,
-                    `category=${this.selectMenu}`
+                    `category=${this.selectMenu}`,
+                    `selectUsers=${this.selectUsers}`,
+                    `selectType=${this.selectType}`,
+                    `selectDateStart=${this.selectDateStart}`,
+                    `selectEndStart=${this.selectEndStart}`,
                 ].join('&')
 
                 let todos = [];
@@ -320,6 +310,16 @@
 
                 console.log(todo);
             },
+            findTickets() {
+                this.loadAsyncData()
+            },
+            findTicketsReset() {
+                this.selectUsers = ''
+                this.selectType = ''
+                this.selectDateStart = null
+                this.selectEndStart = null
+                this.loadAsyncData()
+            },
         },
         mounted() {
             this.loadSubdivisionsName();
@@ -328,12 +328,18 @@
         created() {
             this.loadAsyncData();
         },
+
         computed: {},
         watch: {
             'selectMenu': async function (bank) {
                 this.loadAsyncData()
             },
         },
-        components: {}
+        props: {
+            users: {
+                type: Object,
+            },
+        },
+        components: {DatePicker},
     }
 </script>
