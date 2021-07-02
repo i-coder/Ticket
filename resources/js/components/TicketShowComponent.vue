@@ -188,6 +188,7 @@
                                 <option value="3">не готово</option>
                                 <option value="4">тестирование</option>
                                 <option value="5">пауза</option>
+                                <option value="6">отмена</option>
                             </select>
                         </div>
                         <button class="button is-link is-small" v-on:click="addStatusIspl">Записать</button>
@@ -523,6 +524,7 @@
                     {id: 3, name: 'Не готово'},
                     {id: 4, name: 'Тестирование'},
                     {id: 5, name: 'Пауза'},
+                    {id: 6, name: 'Отмена'},
                 ],
                 zakazText: [
                     {id: 1, name: 'Оценка работы 1'},
